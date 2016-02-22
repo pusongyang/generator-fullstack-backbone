@@ -4,7 +4,7 @@
   "description": "Scaffold out a Fullstack Backbone.js project",
   "keywords": [
     "yeoman-generator",
-    "fllstack",
+    "fullstack",
     "scaffold",
     "framework",
     "mvc",
@@ -12,7 +12,10 @@
   ],
   "author": "ukyo.pu",
   "main": "generators/app/index.js",
-  "repository": "yeoman/generator-fullstack-backbone",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pusongyang/generator-fullstack-backbone.git"
+  },
   "scripts": {
     "test": "mocha --reporter spec"
   },
@@ -34,7 +37,7 @@
   "engines": {
     "node": ">=0.12.10"
   },
-  "license": "BSD",
+  "license": "MIT",
   "files": [
     "generators/all",
     "generators/app",
@@ -45,5 +48,12 @@
     "generators/view",
     "script-base.js",
     "util.js"
-  ]
+  ],
+  "bugs": {
+    "url": "https://github.com/pusongyang/generator-fullstack-backbone/issues"
+  },
+  "homepage": "https://github.com/pusongyang/generator-fullstack-backbone",
+  "directories": {
+    "test": "test"
+  }
 }
