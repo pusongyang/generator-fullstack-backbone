@@ -1,0 +1,307 @@
+'use strict';
+var LIVERELOAD_PORT = 35729;
+var SERVER_PORT = 9000;
+var path = require('path');
+
+// # Globbing
+// for performance reasons we're only matching one level down:
+// 'test/spec/{,*/}*.js'
+// use this if you want to match all subfolders:
+// 'test/spec/**/*.js'
+
+module.exports = function (grunt) {
+
+    // show elapsed time at the end
+    require('time-grunt')(grunt);
+    // load all grunt tasks
+    require('load-grunt-tasks')(grunt);
+
+    // configurable paths
+    var yeomanConfig = {
+        app: 'app',
+        dist: 'dist'
+    };
+
+    grunt.initConfig({
+        yeoman: yeomanConfig,
+        watch: {
+            options: {
+                nospawn: true,
+                livereload: LIVERELOAD_PORT
+            },
+            jst: {
+                files: [
+                    '<%%= yeoman.app %>/scripts/templates/*.ejs'
+                ],
+                tasks: ['jst']
+            },
+<% if (cssUILib!=="none") { %>
+            compass: {
+                files: ['<%%= yeoman.app %>/styles/sass/{,*/}*.{scss,sass}'],
+                tasks: ['sass:server']
+            },
+<% } %>
+            livereload:{
+                options: {
+                    livereload: grunt.option('livereloadport') || LIVERELOAD_PORT
+                },
+                files: [
+                    '<%%= yeoman.app %>/*.html',
+                    '{.tmp,<%%= yeoman.app %>}/styles/{,*/}*.css',
+                    '{.tmp,<%%= yeoman.app %>}/scripts/{,*/}*.js',
+                    '<%%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp}',
+                    '<%%= yeoman.app %>/scripts/templates/*.{ejs}',
+                    'test/spec/**/*.js'
+                ]
+            },
+            express: {
+                files:  [ 'server/{,*/}*.js' ],
+                tasks:  [ "express:dev" ],
+                options: {
+                    spawn: false
+                }
+            }
+        },
+        express: {
+            dev: {
+                options: {
+                    script: 'server/app.js',
+                    port: SERVER_PORT,
+                    debug: true
+                }
+            }
+        },
+        open: {
+            server: {
+                path: 'http://localhost:<%%= SERVER_PORT %>/index.html'
+            }
+        },
+        clean: {
+            dist: ['.tmp', 'dist', 'server_dist', 'archive'],
+            server: '.tmp'
+        },
+<% if (cssUILib!=="none") { %>
+        compass: {
+            options: {
+                sassDir: '<%%= yeoman.app %>/styles/sass',
+                cssDir: '<%%= yeoman.app %>/styles',
+                relativeAssets:true,
+                force:true,
+                noLineComments:true
+            },
+            server:{
+                options: {
+                    outputStyle:"expanded",
+                    debugInfo:false
+                }
+            },
+            dist:{
+                options: {
+                    environment: 'production',
+                    outputStyle:"compressed",
+                    debugInfo:false
+                }
+            }
+        },
+<% } %>
+<% if (includeRequireJS) { %>
+        requirejs: {
+            compile: {
+                options: {
+                    baseUrl: "<%%= yeoman.app %>/scripts",
+                    mainConfigFile: "<%%= yeoman.app %>/scripts/main.js",
+                    paths: {
+                        jquery: "../bower_components/jquery/dist/jquery.min",
+                        backbone: "../bower_components/backbone/backbone",
+                        fastclick: "../bower_components/fastclick/lib/fastclick",
+                        underscore: "../bower_components/lodash/dist/lodash.min",
+                        'templates': '../../.tmp/scripts/templates'
+                    },
+                    name: 'main',
+                    optimize: "uglify",
+                    uglify: {
+                        toplevel: true,
+                        ascii_only: true,
+                        beautify: true,
+                        max_line_length: 1000,
+
+                        //How to pass uglifyjs defined symbols for AST symbol replacement,
+                        //see "defines" options for ast_mangle in the uglifys docs.
+                        defines: {
+                            DEBUG: ['name', 'false']
+                        },
+
+                        //Custom value supported by r.js but done differently
+                        //in uglifyjs directly:
+                        //Skip the processor.ast_mangle() part of the uglify call (r.js 2.0.5+)
+                        no_mangle: true
+                    },
+                    out: '.tmp/scripts/main.js'
+                }
+            }
+        },
+<% } else { %>
+
+<% } %>
+        useminPrepare: {
+            html: '<%%= yeoman.app %>/*.html',
+            options: {
+                dest: '<%%= yeoman.dist %>'
+            }
+        },
+        usemin: {
+            html: ['<%%= yeoman.dist %>/{,*/}*.html'],
+            css:['<%%= yeoman.dist %>/styles/{,*/}*.css'],
+            options:{
+                dirs: ['<%%= yeoman.dist %>']
+            }
+        },
+        imagemin: {
+            dist: {
+                files: [{
+                    expand: true,
+                    cwd: '<%%= yeoman.app %>/images',
+                    src: '{,*/}*.{png,jpg,jpeg}',
+                    dest: '<%%= yeoman.dist %>/images'
+                }]
+            }
+        },
+        cssmin: {
+            dist: {
+                files: {
+                    '<%%= yeoman.dist %>/styles/main.css':[
+                        '.tmp/styles/{,*/}*.css',
+                        '<%%= yeoman.app %>/styles/{,*/}*.css'
+                    ]
+                }
+            }
+        },
+        htmlmin: {
+            dist: {
+                files: [{
+                    expand: true,
+                    cwd: '<%%= yeoman.app %>',
+                    src: '*.html',
+                    dest: '<%%= yeoman.dist %>'
+                }]
+            }
+        },
+    copy: {
+        dist: {
+            files: [{
+                expand: true,
+                dot: true,
+                cwd: '<%%= yeoman.app %>',
+                dest: '<%%= yeoman.dist %>',
+                src: [
+                    '*.{ico,txt}',
+                    'images/{,*/}*.{webp,gif}',
+                    'styles/fonts/{,*/}*.*',
+                    'locales/{,*/}*.*',
+                ]
+            }, {
+<% if (cssUILib==="sassFoundation") { %>
+                expand: true,
+                flatten: true,
+                src: ['<%%= yeoman.app %>/styles/foundation-icons/*.*'],
+                dest:'<%%= yeoman.dist %>/styles/'
+<% } if (cssUILib==="sassMaterialize") { %>
+                expand: true,
+                flatten: true,
+                src: ['<%%= yeoman.app %>/materialize/font/*.*'],
+                dest:'<%%= yeoman.dist %>/styles/font/'
+<% } %>
+            }, {
+                expand: true,
+                dot: true,
+                cwd: 'server',
+                dest: 'server_dist',
+                src: [
+                    'api/{,*/}*.*',
+                    'models/*.*',
+                    'config/express.js',
+                    'config/environment/{production,index}.js',
+                    'routes/{,*/}*.*',
+                    '*.js'
+                ]
+            }]
+        }
+    },
+    jst: {
+<% if (includeRequireJS) {%>
+        options: {
+            amd: true
+        },
+<% } %>
+        compile: {
+            files: {
+                '.tmp/scripts/templates.js': ['<%%= yeoman.app %>/scripts/templates/*.ejs']
+            }
+        }
+    },
+    rev: {
+        dist: {
+            files: {
+                src: [
+                    '<%%= yeoman.dist %>/scripts/{,*/}*.js',
+                    '<%%= yeoman.dist %>/styles/{,*/}*.css',
+                    '<%%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp}',
+                    '<%%= yeoman.dist %>/styles/fonts/{,*/}*.*'
+                ]
+            }
+        }
+    }
+});
+
+    grunt.registerTask('createDefaultTemplate', function () {
+        grunt.file.write('.tmp/scripts/templates.js', 'this.JST = this.JST || {};');
+    });
+
+    grunt.registerTask('server', function (target) {
+        grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
+        grunt.task.run(['serve' + (target ? ':' + target : '')]);
+    });
+
+    grunt.registerTask('serve', function (target) {
+        if (target === 'dist') {
+            return grunt.task.run(['build', 'open:server', 'connect:dist:keepalive']);
+        }
+
+        grunt.task.run([
+            'clean:server',
+            'createDefaultTemplate',
+            'jst',
+<% if (cssUILib!=="none") { %>
+            'compass:server',
+<% } %>
+            'express:dev',
+            'open:server',
+            'watch'
+        ]);
+    });
+
+    grunt.registerTask('build', [
+        'clean:dist',
+        'createDefaultTemplate',
+        'jst',
+<% if (cssUILib!=="none") { %>
+        'compass:dist',
+<% } %>
+<% if (includeRequireJS) { %>
+        'requirejs',
+<% } %>
+        'useminPrepare',
+        'imagemin',
+        'htmlmin',
+        'concat',
+        'cssmin',
+        'uglify',
+        'copy',
+        'rev',
+        'usemin'
+    ]);
+
+    grunt.registerTask('default', [
+        'build'
+    ]);
+};

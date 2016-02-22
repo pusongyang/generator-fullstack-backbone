@@ -1,0 +1,18 @@
+// Example model
+
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+
+var <%= className %>Schema = new Schema({
+});
+
+<%= className %>Schema.methods = {
+};
+<%= className %>Schema.statics = {
+    get: function (area_id, cb) {
+        this.findOne({ _id : area_id })
+            .exec(cb);
+    }
+};
+
+module.exports = mongoose.model('<%= className %>', <%= className %>Schema);

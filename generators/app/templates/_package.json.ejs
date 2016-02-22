@@ -1,0 +1,41 @@
+{
+    "private": true,
+    "devDependencies": {
+        "apache-server-configs": "^2.8.0",
+        "connect-livereload": "^0.4.0",
+        "grunt": "^0.4.5",
+        "grunt-contrib-clean": "^0.6.0",
+<% if (cssUILib!=="none") { %>
+        "grunt-contrib-compass": "^1.0.4",
+<% } %>
+        "grunt-contrib-concat": "^0.5.0",
+        "grunt-contrib-connect": "^0.8.0",
+        "grunt-contrib-copy": "^0.5.0",
+        "grunt-contrib-cssmin": "^0.10.0",
+        "grunt-contrib-htmlmin": "^0.3.0",
+        "grunt-contrib-imagemin": "^0.9.2",
+        "grunt-contrib-jshint": "^0.10.0",
+        "grunt-contrib-jst": "^0.6.0",
+<% if(includeRequireJS){ %>
+        "grunt-requirejs": "^0.4.2",
+<% } %>
+        "grunt-contrib-uglify": "^0.6.0",
+        "grunt-contrib-watch": "^0.6.1",
+        "grunt-express-server": "^0.5.1",
+        "grunt-open": "^0.2.3",
+        "grunt-parallel": "^0.4.1",
+        "grunt-rev": "^0.1.0",
+        "grunt-upload-file": "0.0.2",
+        "grunt-usemin": "^2.4.0",
+        "jshint-stylish": "^1.0.0",
+        "load-grunt-tasks": "^0.6.0",
+        "time-grunt": "^1.0.0"
+    },
+    "scripts": {
+        "start": "pm2 pm2.json",
+        "test": "grunt test"
+    },
+    "engines": {
+        "node": ">=0.12.10"
+    }
+}

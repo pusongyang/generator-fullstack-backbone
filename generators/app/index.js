@@ -1,46 +1,285 @@
 'use strict';
-var generators = require('yeoman-generator');
+var util = require('util');
+var path = require('path');
+var ejs = require('ejs');
+var htmlWiring = require('html-wiring');
+var mkdirp = require('mkdirp');
+var pascalCase = require('pascal-case');
+var paramCase = require('param-case');
+var yeoman = require('yeoman-generator');
 
-module.exports = generators.Base.extend({
-    // The name `constructor` is important here
+var BackboneGenerator = yeoman.generators.Base.extend({
     constructor: function () {
-        // Calling the super constructor is important so our generator is correctly set up
-        generators.Base.apply(this, arguments);
-        console.log("constructor here");
+        yeoman.generators.Base.apply(this, arguments);
 
-        // Next, add your custom code
-        this.option('coffee'); // This method adds support for a `--coffee` flag
+        this.option('skip-install', {
+            desc: 'Skip the bower and npm installations',
+            defaults: false
+        });
+        this.appname = pascalCase(this.appname);
+
+        this.config.defaults({
+            appName: this.appname
+        });
+
+        //this.indexFile = htmlWiring.readFileAsString(this.templatePath('app/index.html'));
     },
-    initializing:{//checking current project state, getting configs, etc
-        init1:function(){
-            console.log("init1");
-        },
-        init2:function(){
-            console.log("init2");
-        }
-    },
-    prompting: function () {//Where you prompt users for options
-        var done = this.async();
-        this.prompt({
-            type    : 'input',
-            name    : 'name',
-            message : 'Your project name',
-            default : this.appname // Default to current folder name
-        }, function (answers) {
-            this.log(answers.name);
-            done();
+
+    prompting: function () {
+        var cb = this.async();
+
+        // welcome message
+        this.log(this.yeoman);
+        this.log('Out of the box I include HTML5 Boilerplate, jQuery and Backbone.js.');
+
+        var prompts = [{
+            type: 'checkbox',
+            name: 'features',
+            message: 'What more would you like?',
+            choices: [{
+                name: 'Use RequireJS',
+                value: 'requirejs',
+                checked: this.config.get("includeRequireJS")
+            }, {
+                name: 'Use Modernizr',
+                value: 'modernizr',
+                checked: this.config.get("includeModernizr")
+            }]
+        }, {
+            type: 'list',
+            name: 'cssUILib',
+            message: 'which UI framework would you like?',
+            choices: [{
+                name: 'Materialize CSS for Sass',
+                value: 'sassMaterialize'
+            }, {
+                name: 'Foundation5 for Sass',
+                value: 'sassFoundation'
+            }, {
+                name: 'Twitter Bootstrap for Sass',
+                value: 'sassBootstrap'
+            }, {
+                name: 'None of those',
+                value: 'none'
+            }],
+            default:this.config.get("cssUILib")
+        }];
+
+        this.prompt(prompts, function (answers) {
+            var features = answers.features,
+                cssUILib = answers.cssUILib;
+
+            function hasFeature(feat) {
+                return features.indexOf(feat) !== -1;
+            }
+
+            // manually deal with the response, get back and store the results.
+            // we change a bit this way of doing to automatically do this in the self.prompt() method.
+            this.includeRequireJS = hasFeature('requirejs');
+            this.includeModernizr = hasFeature('modernizr');
+            this.cssUILib = cssUILib;
+            this.env.options.appPath="app";
+
+            this.config.set('includeRequireJS', this.includeRequireJS);
+            this.config.set('includeModernizr', this.includeModernizr);
+            this.config.set('cssUILib', cssUILib);
+            cb();
         }.bind(this));
     },
-    configuring:function(){//creating .editorconfig files and other metadata files
+
+    writing: {
+        git: function () {
+            this.fs.copyTpl(
+                this.templatePath('gitignore'),
+                this.destinationPath('.gitignore')
+            );
+        },
+        bower: function () {
+            this.fs.copyTpl(
+                this.templatePath('bowerrc'),
+                this.destinationPath('.bowerrc')
+            );
+            this.fs.copyTpl(
+                this.templatePath('_bower.json.ejs'),
+                this.destinationPath('bower.json'),
+                {
+                    appSlugName: this.appname,
+                    includeRequireJS: this.includeRequireJS,
+                    includeModernizr: this.includeModernizr,
+                    cssUILib: this.cssUILib
+                }
+            );
+        },
+        editorConfig: function () {
+            this.fs.copyTpl(
+                this.templatePath('editorconfig'),
+                this.destinationPath('.editorconfig')
+            );
+        },
+        gruntfile: function () {
+            this.fs.copyTpl(
+                this.templatePath('Gruntfile.js.ejs'),
+                this.destinationPath('Gruntfile.js'),
+                {
+                    appPath: this.env.options.appPath,
+                    includeRequireJS: this.includeRequireJS,
+                    cssUILib: this.cssUILib
+                }
+            );
+        },
+        packageJSON: function () {
+            this.fs.copyTpl(
+                this.templatePath('_package.json.ejs'),
+                this.destinationPath('package.json'),
+                {
+                    includeRequireJS: this.includeRequireJS,
+                    cssUILib: this.cssUILib
+                }
+            );
+        },
+        mainStylesheet: function () {
+            if (this.cssUILib==="none") {
+                this.fs.write(
+                    this.destinationPath(this.env.options.appPath + '/styles/main.css'),
+                    "html {font-family: sans-serif;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;}"
+                );
+            }else{
+                this.fs.copyTpl(
+                    this.templatePath(this.env.options.appPath + '/styles/sass/main.scss'),
+                    this.destinationPath(this.env.options.appPath + '/styles/sass/main.scss')
+                );
+            }
+        },
+        writeIndex: function () {
+            this.indexFile = htmlWiring.readFileAsString(this.templatePath('app/index.html.ejs'));
+            this.indexFile = ejs.render(
+                this.indexFile,
+                {
+                    appName: this.appname,
+                    includeModernizr: this.includeModernizr,
+                    includeRequireJS: this.includeRequireJS,
+                    cssUILib: this.cssUILib
+                }
+            );
+        },
+        mainScript:function(){
+            if(this.includeRequireJS){
+                this.fs.copyTpl(
+                    this.templatePath('app/scripts/main_requirejs.js'),
+                    this.destinationPath(this.env.options.appPath + '/scripts/main.js')
+                );
+            }else{
+                this.fs.copyTpl(
+                    this.templatePath('app/scripts/main.js.ejs'),
+                    this.destinationPath(this.env.options.appPath + '/scripts/main.js'),
+                    {
+                        appSlugName: this.appname
+                    }
+                );
+            }
+        },
+        setupEnv: function () {
+            mkdirp.sync(
+                this.templatePath(this.env.options.appPath)
+            );
+            mkdirp.sync(
+                this.templatePath(this.env.options.appPath + '/scripts')
+            );
+            mkdirp.sync(
+                this.templatePath(this.env.options.appPath + '/scripts/vendor/')
+            );
+            mkdirp.sync(
+                this.templatePath(this.env.options.appPath + '/styles')
+            );
+            mkdirp.sync(
+                this.templatePath(this.env.options.appPath + '/images')
+            );
+            this.fs.copyTpl(
+                this.templatePath('app/404.html'),
+                this.destinationPath(this.env.options.appPath + '/404.html')
+            );
+            this.fs.copyTpl(
+                this.templatePath('app/500.html'),
+                this.destinationPath(this.env.options.appPath + '/500.html')
+            );
+            this.fs.copyTpl(
+                this.templatePath('app/favicon.ico'),
+                this.destinationPath(this.env.options.appPath + '/favicon.ico')
+            );
+            this.fs.copyTpl(
+                this.templatePath('app/robots.txt'),
+                this.destinationPath(this.env.options.appPath + '/robots.txt')
+            );
+            this.fs.write(
+                this.destinationPath(path.join(this.env.options.appPath, '/index.html')),
+                this.indexFile
+            );
+//server side create
+            mkdirp.sync(
+                this.templatePath("server")
+            );
+            mkdirp.sync(
+                this.templatePath("server/api")
+            );
+            mkdirp.sync(
+                this.templatePath("server/config")
+            );
+            mkdirp.sync(
+                this.templatePath("server/config/environment")
+            );
+            mkdirp.sync(
+                this.templatePath("server/models")
+            );
+            mkdirp.sync(
+                this.templatePath("server/routes")
+            );
+            this.fs.copyTpl(
+                this.templatePath('server/app.js'),
+                this.destinationPath('server/app.js')
+            );
+            this.fs.copyTpl(
+                this.templatePath('server/config/express.js'),
+                this.destinationPath('server/config/express.js')
+            );
+            this.fs.copyTpl(
+                this.templatePath('server/config/environment/index.js'),
+                this.destinationPath('server/config/environment/index.js')
+            );
+            this.fs.copyTpl(
+                this.templatePath('server/config/environment/development.js'),
+                this.destinationPath('server/config/environment/development.js')
+            );
+            this.fs.copyTpl(
+                this.templatePath('server/routes/api.js'),
+                this.destinationPath('server/routes/api.js')
+            );
+            this.fs.copyTpl(
+                this.templatePath('server/helper.js'),
+                this.destinationPath('server/helper.js')
+            );
+        },
+
+        composeTest: function () {
+            if (['backbone:app', 'backbone'].indexOf(this.options.namespace) >= 0) {
+                this.composeWith(this.testFramework, {
+                    'skip-install': this.options['skip-install'],
+                    'skipMessage': true
+                });
+            }
+        }
     },
-    default:function(){//If the method name doesn't match a priority, it will be pushed to this group.
-    },
-    writing:function(){//Where you write the generator specific files (routes, controllers, etc)
-    },
-    conflicts:function(){//Where conflicts are handled (used internally)
-    },
-    install:function(){//Where installation are run (npm, bower)
-    },
-    end:function(){//Called last, cleanup, say good bye, etc
+
+    install: function () {
+        var shouldInstall = !this.options['skip-install'];
+        var isInstallable = ['backbone:app', 'backbone'].indexOf(this.options.namespace) > -1;
+        if (shouldInstall && isInstallable) {
+            this.npmInstall();
+            this.bowerInstall('', {
+                'config.cwd': this.destinationPath('.'),
+                'config.directory': path.join(this.config.get('appPath'), 'bower_components')
+            });
+        }
     }
 });
+
+module.exports = BackboneGenerator;

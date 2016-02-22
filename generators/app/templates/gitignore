@@ -1,0 +1,10 @@
+.tmp
+.idea
+.sass-cache
+node_modules
+dist
+test/temp
+app/bower_components
+server_dist
+server/config/environment/production.js
+archive

@@ -1,0 +1,153 @@
+/*global describe:true, beforeEach:true, it:true */
+'use strict';
+var path    = require('path');
+var yeoman  = require('yeoman-generator');
+var helpers = yeoman.test;
+var assert  = yeoman.assert;
+var fs      = require('fs');
+var test    = require('./helper.js');
+
+var config = [
+  '{',
+  '  "generator-backbone": {',
+  '    "appPath": "app",',
+  '    "appName": "Temp"',
+  '  }',
+  '}'
+].join('\n');
+
+describe('Backbone generator test', function () {
+  beforeEach(function (done) {
+    var prompts = {
+      features: ['sassBootstrap']
+    };
+
+    test.createAppGenerator(config, prompts, done);
+  });
+
+  it('every generator can be required without throwing', function () {
+    // not testing the actual run of generators yet
+    this.all = require('../generators/all');
+    this.app = require('../generators/app');
+    this.collection = require('../generators/collection');
+    this.model = require('../generators/model');
+    this.router = require('../generators/router');
+    this.view = require('../generators/view');
+  });
+
+  describe('create expected files', function () {
+    it('in path /app', function () {
+      var expectedContent = [
+        ['bower.json', /"name": "temp"/]
+      ];
+      var expected = [
+        'Gruntfile.js',
+        'app/404.html',
+        'app/favicon.ico',
+        'app/robots.txt',
+        'app/index.html',
+        '.gitignore',
+        '.gitattributes',
+        '.bowerrc',
+        '.jshintrc',
+        '.editorconfig',
+        '.yo-rc.json',
+        'app/scripts/main.js',
+        'app/styles/main.scss'
+      ];
+
+      assert.file(expected);
+      assert.fileContent(expectedContent);
+    });
+  });
+
+  describe('creates backbone model', function () {
+    it('without failure', function (done) {
+
+      test.createSubGenerator(config, 'model', function () {
+        assert.fileContent(
+          'app/scripts/models/foo.js', /Models.Foo = Backbone.Model.extend\(\{/
+        );
+        done();
+      });
+    });
+  });
+
+  describe('creates backbone collection', function () {
+    it('without failure', function (done) {
+
+      test.createSubGenerator(config, 'collection', function () {
+        assert.fileContent(
+          'app/scripts/collections/foo.js', /Collections.Foo = Backbone.Collection.extend\(\{/
+        );
+        done();
+      });
+    });
+  });
+
+  describe('creates backbone router', function () {
+    it('without failure', function (done) {
+
+      test.createSubGenerator(config, 'router', function () {
+        assert.fileContent(
+          'app/scripts/routes/foo.js', /Routers.Foo = Backbone.Router.extend\(\{/
+        );
+        done();
+      });
+    });
+  });
+
+  describe('creates backbone view', function () {
+    it('without failure', function (done) {
+
+      test.createSubGenerator(config, 'view', function () {
+        assert.fileContent(
+          'app/scripts/views/foo.js', /Views.Foo = Backbone.View.extend\(\{(.|\n)*app\/scripts\/templates\/foo.ejs/
+        );
+        assert.file('app/scripts/templates/foo.ejs');
+        done();
+      });
+    });
+  });
+
+  describe('creates backbone all', function () {
+    it('without failure', function (done) {
+
+      // mocks composed generators to test for their execution
+      var hasBeenCalled = {};
+      var depNames = [
+        'backbone:model',
+        'backbone:collection',
+        'backbone:router',
+        'backbone:view'
+      ];
+      var deps = depNames.map(function (name) {
+        return [
+          yeoman.Base.extend({
+            exec: function () {
+              hasBeenCalled[name] = true;
+              testDepsBeenCalled();
+            }
+          }),
+          name
+        ];
+      });
+
+      // tests that all dependencies have been called, will timeout otherwise
+      var testDepsBeenCalled = function () {
+        var allDepsCalled = depNames.every(function (name) {
+          return hasBeenCalled[name];
+        });
+        if (allDepsCalled) {
+          assert(true);
+          done();
+        }
+      };
+
+      // runs backbone:all generator
+      test.createSubGenerator(config, 'all', testDepsBeenCalled, deps);
+    });
+  });
+
+
+});
