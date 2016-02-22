@@ -43,28 +43,11 @@ Also checkout this [NetTuts write-up](http://net.tutsplus.com/tutorials/javascri
 
 ## Options
 
-* `--appPath`
-
-  Generate scaffold into a custom directory.
-
-* `--requirejs`
-
-  Generate scaffolds using RequireJS (AMD) Loader. By default check if project uses RequireJS.
-
 * `--skip-install`
 
   Skips the automatic execution of `bower` and `npm` after
   scaffolding has finished.
 
-* `--test-framework=[framework]`
-
-  Defaults to `mocha`. Can be switched for
-  another supported testing framework like `jasmine`.
-
-* `--template-framework=[framework]`
-
-  Defaults to `lodash` templating with grunt-contrib-jst.
-  `handlebars` and `mustache` are also supported.
 
 ## A note regarding JST templates and strict mode
 
@@ -91,8 +74,6 @@ jst: {
 A result of this change is that your template variable definitions must also be updated from `<%= templateVariable %>` to `<%= data.templateVariable %>`. More information on this can be found in the [Underscore documentation](http://underscorejs.org/#template).
 
 ## Contribute
-
-See the [contributing docs](https://github.com/yeoman/yeoman/blob/master/contributing.md)
 
 When submitting an issue, please follow the [guidelines](https://github.com/yeoman/yeoman/blob/master/contributing.md#issue-submission). Especially important is to make sure Yeoman is up-to-date, and providing the command or commands that cause the issue.
 
