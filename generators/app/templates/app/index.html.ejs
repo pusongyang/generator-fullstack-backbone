@@ -7,21 +7,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css styles/main.css -->
-    <% if (cssUILib==="sassFoundation") { %>
-    <link rel="stylesheet" href="bower_components/foundation/css/normalize.min.css" type="text/css">
-    <link rel="stylesheet" href="bower_components/foundation/css/foundation.min.css" type="text/css">
-    <% } if(cssUILib==="sassMaterialize") { %>
-    <link rel="stylesheet" href="bower_components/materialize/dist/css/materialize.min.css" type="text/css" media="screen,projection"/>
-    <% } if(cssUILib==="sassBootstrap") { %>
+    <% if (cssUILib==="sassFoundation") { -%>
+    <link rel="stylesheet" href="styles/normalize.css" type="text/css">
+    <link rel="stylesheet" href="styles/foundation.css" type="text/css">
+    <% } if(cssUILib==="sassMaterialize") { -%>
+    <link rel="stylesheet" href="styles/materialize.css" type="text/css" media="screen,projection"/>
+    <% } if(cssUILib==="sassBootstrap") { -%>
     <link rel="stylesheet" href="styles/bootstrap.css">
-    <% } %>
+    <% } -%>
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
-    <% if (includeModernizr) { %>
+    <% if (includeModernizr) { -%>
     <!-- build:js scripts/vendor/modernizr.js -->
     <script src="bower_components/modernizr/modernizr.js"></script>
     <!-- endbuild -->
-    <% } %>
+    <% } -%>
 </head>
 <body>
 <!--[if lt IE 10]>
@@ -36,14 +36,21 @@
     </script>
 
 <% if (includeRequireJS) { %>
-    <script src="scripts/vendor/spin.min.js"></script>
-    <script src="scripts/vendor/require.js"></script>
+    <script src="bower_components/spin.js/spin.min.js"></script>
+    <script src="bower_components/requirejs/require.js"></script>
     <script src="scripts/main.js"></script>
 <% }else{ %>
     <!-- build:js scripts/vendor.js -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/lodash/dist/lodash.compat.js"></script>
     <script src="bower_components/backbone/backbone.js"></script>
+<% if(cssUILib==="sassMaterialize") { -%>
+    <script src="bower_components/materialize/dist/js/materialize.min.js"></script>
+<% }else if(cssUILib==="sassFoundation") { -%>
+    <script src="bower_components/foundation/js/foundation.min.js"></script>
+<% }else if(cssUILib==="sassBootstrap") { -%>
+    <script src="bower_components/bootstrap-sass/assets/javascripts/bootstrap.min.js"></script>
+<% } -%>
     <!-- endbuild -->
     <!-- build:js scripts/plugins.js -->
     <script src="bower_components/moment/min/moment.min.js"></script>

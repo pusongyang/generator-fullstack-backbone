@@ -12,10 +12,10 @@
         <% } if (cssUILib === 'sassFoundation') { %>
         "foundation": "~5.5.3",
         <% } if (cssUILib === 'sassMaterialize') { %>
-        "Materialize": "~0.97.5",
-        "materializecss-amd": "~1.0.1",
+        "Materialize": "materialize#^0.97.5",
         <% } %>
         <% if (includeRequireJS) { %>
+        "spin.js": "spinjs#^2.3.2",
         "requirejs": "~2.1.10",
         "requirejs-text": "~2.0.10",
         <% } if (includeModernizr) { %>

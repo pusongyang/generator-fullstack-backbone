@@ -1,6 +1,6 @@
 /**
  * Main application routes
- * Don't remove the {{insertFlag}}
+ * Don't remove the insertFlag
  */
 
 'use strict';

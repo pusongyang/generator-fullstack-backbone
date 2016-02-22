@@ -14,7 +14,6 @@ var async = require('async');
 var config = require('./config/environment');
 var fs = require('fs');
 var join = require('path').join;
-var helper = require('./helper');
 
 var redis = require("redis"),
     redisCli = redis.createClient(config.redis.port, config.redis.host, config.redis.options),
@@ -52,7 +51,6 @@ app.use(function (req, res) {
     var stream404 = fs.createReadStream(path.join(config.root, config.appPath,"404.html"));
     stream404.pipe(res);
 });
-helper.initHelper(redisCliSess);
 
 var server = require('http').createServer(app);
 server.listen(config.port, config.ip, function () {

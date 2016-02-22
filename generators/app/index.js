@@ -165,8 +165,11 @@ var BackboneGenerator = yeoman.generators.Base.extend({
         mainScript:function(){
             if(this.includeRequireJS){
                 this.fs.copyTpl(
-                    this.templatePath('app/scripts/main_requirejs.js'),
-                    this.destinationPath(this.env.options.appPath + '/scripts/main.js')
+                    this.templatePath('app/scripts/main_requirejs.js.ejs'),
+                    this.destinationPath(this.env.options.appPath + '/scripts/main.js'),
+                    {
+                        cssUILib: this.cssUILib
+                    }
                 );
             }else{
                 this.fs.copyTpl(
@@ -194,21 +197,25 @@ var BackboneGenerator = yeoman.generators.Base.extend({
             mkdirp.sync(
                 this.templatePath(this.env.options.appPath + '/images')
             );
-            this.fs.copyTpl(
+            this.fs.copy(
                 this.templatePath('app/404.html'),
                 this.destinationPath(this.env.options.appPath + '/404.html')
             );
-            this.fs.copyTpl(
+            this.fs.copy(
                 this.templatePath('app/500.html'),
                 this.destinationPath(this.env.options.appPath + '/500.html')
             );
-            this.fs.copyTpl(
+            this.fs.copy(
                 this.templatePath('app/favicon.ico'),
                 this.destinationPath(this.env.options.appPath + '/favicon.ico')
             );
-            this.fs.copyTpl(
+            this.fs.copy(
                 this.templatePath('app/robots.txt'),
                 this.destinationPath(this.env.options.appPath + '/robots.txt')
+            );
+            this.fs.copy(
+                this.templatePath('app/scripts/vendor/**'),
+                this.destinationPath(this.env.options.appPath + '/scripts/vendor/')
             );
             this.fs.write(
                 this.destinationPath(path.join(this.env.options.appPath, '/index.html')),
@@ -249,14 +256,12 @@ var BackboneGenerator = yeoman.generators.Base.extend({
                 this.templatePath('server/config/environment/development.js'),
                 this.destinationPath('server/config/environment/development.js')
             );
-            this.fs.copyTpl(
-                this.templatePath('server/routes/api.js'),
-                this.destinationPath('server/routes/api.js')
-            );
-            this.fs.copyTpl(
-                this.templatePath('server/helper.js'),
-                this.destinationPath('server/helper.js')
-            );
+            if( !this.fs.exists(this.destinationPath('server/routes/api.js')) ){
+                this.fs.copyTpl(
+                    this.templatePath('server/routes/api.js'),
+                    this.destinationPath('server/routes/api.js')
+                );
+            }
         },
 
         composeTest: function () {
@@ -278,6 +283,22 @@ var BackboneGenerator = yeoman.generators.Base.extend({
                 'config.cwd': this.destinationPath('.'),
                 'config.directory': path.join(this.config.get('appPath'), 'bower_components')
             });
+        }
+    },
+    end:function(){
+        var bowerSassPath="";
+        if( this.cssUILib!=="none" ){
+            if(this.cssUILib==="sassMaterialize"){
+                bowerSassPath="materialize/sass/**";
+            }else if(this.cssUILib==="sassFoundation"){
+                bowerSassPath="foundation/scss/**";
+            }else if(this.cssUILib==="sassBootstrap"){
+                bowerSassPath="bootstrap-sass/assets/stylesheets/**";
+            }
+            this.fs.copy(
+                this.destinationPath( path.join("app/bower_components/"+bowerSassPath) ),
+                path.join("app/styles/sass/")
+            );
         }
     }
 });

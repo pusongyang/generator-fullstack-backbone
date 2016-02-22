@@ -46,7 +46,7 @@ Also checkout this [NetTuts write-up](http://net.tutsplus.com/tutorials/javascri
 * `--skip-install`
 
   Skips the automatic execution of `bower` and `npm` after
-  scaffolding has finished.
+  scaffolding has finished.By default this value is false.
 
 
 ## A note regarding JST templates and strict mode
