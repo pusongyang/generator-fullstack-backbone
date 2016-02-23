@@ -13,9 +13,9 @@ var BackboneGenerator = yeoman.generators.Base.extend({
     },
 
     install: function () {
-        this.composeWith('fullstack-backbone:view', {arguments: this.args});
         this.composeWith('fullstack-backbone:model', {arguments: this.args});
         this.composeWith('fullstack-backbone:collection', {arguments: this.args});
+        this.composeWith('fullstack-backbone:view', {arguments: this.args});
     }
 });
 

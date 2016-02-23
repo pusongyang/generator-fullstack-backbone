@@ -3,13 +3,14 @@
 define([
   'underscore',
   'backbone',
-  'models/<%= className %>'
-], function (_, Backbone, <%= className %>Model) {
-  'use strict';
+  'models/<%= modelName %>'
+], function (_, Backbone, <%= modelName %>Model) {
+    'use strict';
 
-  var <%= className %>Collection = Backbone.Collection.extend({
-    model: <%= className %>Model
-  });
-
-  return <%= className %>Collection;
+    var <%= className %>Collection = Backbone.Collection.extend({
+        url: '/<%= className.toString().toLowerCase() %>',
+        model: <%= modelName %>Model,
+        comparator:"_id"
+    });
+    return <%= className %>Collection;
 });

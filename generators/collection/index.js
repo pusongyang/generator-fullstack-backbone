@@ -3,6 +3,7 @@ var path = require('path');
 var util = require('util');
 var ejs = require('ejs');
 var pascalCase = require('pascal-case');
+var Inflector = require('inflected');
 var yeoman = require('yeoman-generator');
 var scriptBase = require('../../script-base');
 
@@ -12,6 +13,7 @@ var CollectionGenerator = scriptBase.extend({
 
         var dirPath = '../templates';
         this.sourceRoot(path.join(__dirname, dirPath));
+        this.name=Inflector.pluralize(this.name);
     },
 
     writing: {
@@ -21,7 +23,8 @@ var CollectionGenerator = scriptBase.extend({
                 path.join(this.env.options.appPath + '/scripts/collections', this.name),
                 {
                     appClassName: pascalCase(this.appname),
-                    className: pascalCase(this.name)
+                    className: pascalCase(this.name),
+                    modelName: Inflector.singularize(this.name)
                 }
             );
 

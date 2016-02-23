@@ -35,12 +35,12 @@ module.exports = function (grunt) {
                 ],
                 tasks: ['jst']
             },
-<% if (cssUILib!=="none") { %>
+<% if (cssUILib!=="none") { -%>
             compass: {
                 files: ['<%%= yeoman.app %>/styles/sass/{,*/}*.{scss,sass}'],
                 tasks: ['sass:server']
             },
-<% } %>
+<% } -%>
             livereload:{
                 options: {
                     livereload: grunt.option('livereloadport') || LIVERELOAD_PORT
@@ -80,7 +80,7 @@ module.exports = function (grunt) {
             dist: ['.tmp', 'dist', 'server_dist', 'archive'],
             server: '.tmp'
         },
-<% if (cssUILib!=="none") { %>
+<% if (cssUILib!=="none") { -%>
         compass: {
             options: {
                 sassDir: '<%%= yeoman.app %>/styles/sass',
@@ -103,8 +103,8 @@ module.exports = function (grunt) {
                 }
             }
         },
-<% } %>
-<% if (includeRequireJS) { %>
+<% } -%>
+<% if (includeRequireJS) { -%>
         requirejs: {
             compile: {
                 options: {
@@ -140,9 +140,7 @@ module.exports = function (grunt) {
                 }
             }
         },
-<% } else { %>
-
-<% } %>
+<% } -%>
         useminPrepare: {
             html: '<%%= yeoman.app %>/*.html',
             options: {
@@ -200,17 +198,17 @@ module.exports = function (grunt) {
                     'locales/{,*/}*.*',
                 ]
             }, {
-<% if (cssUILib==="sassFoundation") { %>
+<% if (cssUILib==="sassFoundation") { -%>
                 expand: true,
                 flatten: true,
                 src: ['<%%= yeoman.app %>/styles/foundation-icons/*.*'],
                 dest:'<%%= yeoman.dist %>/styles/'
-<% } if (cssUILib==="sassMaterialize") { %>
+<% } if (cssUILib==="sassMaterialize") { -%>
                 expand: true,
                 flatten: true,
                 src: ['<%%= yeoman.app %>/materialize/font/*.*'],
                 dest:'<%%= yeoman.dist %>/styles/font/'
-<% } %>
+<% } -%>
             }, {
                 expand: true,
                 dot: true,
@@ -228,11 +226,11 @@ module.exports = function (grunt) {
         }
     },
     jst: {
-<% if (includeRequireJS) {%>
+<% if (includeRequireJS) { -%>
         options: {
             amd: true
         },
-<% } %>
+<% } -%>
         compile: {
             files: {
                 '.tmp/scripts/templates.js': ['<%%= yeoman.app %>/scripts/templates/*.ejs']
@@ -271,9 +269,9 @@ module.exports = function (grunt) {
             'clean:server',
             'createDefaultTemplate',
             'jst',
-<% if (cssUILib!=="none") { %>
+<% if (cssUILib!=="none") { -%>
             'compass:server',
-<% } %>
+<% } -%>
             'express:dev',
             'open:server',
             'watch'
@@ -284,12 +282,11 @@ module.exports = function (grunt) {
         'clean:dist',
         'createDefaultTemplate',
         'jst',
-<% if (cssUILib!=="none") { %>
+<% if (cssUILib!=="none") { -%>
         'compass:dist',
-<% } %>
-<% if (includeRequireJS) { %>
+<% } if (includeRequireJS) { -%>
         'requirejs',
-<% } %>
+<% } -%>
         'useminPrepare',
         'imagemin',
         'htmlmin',

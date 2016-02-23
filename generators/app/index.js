@@ -5,7 +5,6 @@ var ejs = require('ejs');
 var htmlWiring = require('html-wiring');
 var mkdirp = require('mkdirp');
 var pascalCase = require('pascal-case');
-var paramCase = require('param-case');
 var yeoman = require('yeoman-generator');
 
 var BackboneGenerator = yeoman.generators.Base.extend({
@@ -14,14 +13,13 @@ var BackboneGenerator = yeoman.generators.Base.extend({
 
         this.option('skip-install', {
             desc: 'Skip the bower and npm installations',
-            defaults: false
+            defaults: true
         });
         this.appname = pascalCase(this.appname);
 
         this.config.defaults({
             appName: this.appname
         });
-
         //this.indexFile = htmlWiring.readFileAsString(this.templatePath('app/index.html'));
     },
 
@@ -198,12 +196,8 @@ var BackboneGenerator = yeoman.generators.Base.extend({
                 this.templatePath(this.env.options.appPath + '/images')
             );
             this.fs.copy(
-                this.templatePath('app/404.html'),
-                this.destinationPath(this.env.options.appPath + '/404.html')
-            );
-            this.fs.copy(
-                this.templatePath('app/500.html'),
-                this.destinationPath(this.env.options.appPath + '/500.html')
+                this.templatePath('app/*.html'),
+                this.destinationPath(this.env.options.appPath + '/')
             );
             this.fs.copy(
                 this.templatePath('app/favicon.ico'),

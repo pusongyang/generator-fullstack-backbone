@@ -1,7 +1,7 @@
 'use strict';
 
 var express = require('express');
-var controller = require('./<%=className -%>.controller');
+var controller = require('./<%=className.toString().toLowerCase() %>.controller');
 var router = express.Router();
 
 router.get('/',    controller.index);

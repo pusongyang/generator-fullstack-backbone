@@ -22,9 +22,9 @@
   "dependencies": {
     "ejs": "^2.3.0",
     "html-wiring": "^1.0.0",
+    "inflected": "^1.1.6",
     "mkdirp": "^0.5.1",
-    "param-case": "^1.1.0",
-    "pascal-case": "^1.1.0",
+    "pascal-case": "^1.1.2",
     "yeoman-generator": "^0.21.1"
   },
   "peerDependencies": {

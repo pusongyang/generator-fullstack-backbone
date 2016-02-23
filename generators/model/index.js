@@ -2,6 +2,7 @@
 var path = require('path');
 var util = require('util');
 var pascalCase = require('pascal-case');
+var Inflector = require('inflected');
 var yeoman = require('yeoman-generator');
 var scriptBase = require('../../script-base');
 
@@ -24,6 +25,7 @@ var ModelGenerator = scriptBase.extend({
                 type: parts[1] || 'string'
             };
         });
+        this.name=Inflector.singularize(this.name);
     },
 
     writing: {
