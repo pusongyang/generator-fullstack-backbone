@@ -1,6 +1,6 @@
 {
   "name": "generator-fullstack-backbone",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Scaffold out a Fullstack Backbone.js project",
   "keywords": [
     "yeoman-generator",
