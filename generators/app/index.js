@@ -169,10 +169,21 @@ var BackboneGenerator = yeoman.generators.Base.extend({
                         cssUILib: this.cssUILib
                     }
                 );
+                this.fs.copyTpl(
+                    this.templatePath('app/scripts/routes/all_requirejs.js.ejs'),
+                    this.destinationPath(this.env.options.appPath + '/scripts/routes/all.js')
+                );
             }else{
                 this.fs.copyTpl(
                     this.templatePath('app/scripts/main.js.ejs'),
                     this.destinationPath(this.env.options.appPath + '/scripts/main.js'),
+                    {
+                        appSlugName: this.appname
+                    }
+                );
+                this.fs.copyTpl(
+                    this.templatePath('app/scripts/routes/main.js.ejs'),
+                    this.destinationPath(this.env.options.appPath + '/scripts/routes/all.js'),
                     {
                         appSlugName: this.appname
                     }
@@ -292,6 +303,16 @@ var BackboneGenerator = yeoman.generators.Base.extend({
             this.fs.copy(
                 this.destinationPath( path.join("app/bower_components/"+bowerSassPath) ),
                 path.join("app/styles/sass/")
+            );
+        }
+        if( this.includeRequireJS){
+            this.fs.copy(
+                this.destinationPath( path.join("app/bower_components/spin.js/spin.min.js") ),
+                path.join("app/scripts/vendor/spin.min.js")
+            );
+            this.fs.copy(
+                this.destinationPath( path.join("app/bower_components/requirejs/require.js") ),
+                path.join("app/scripts/vendor/require.js")
             );
         }
     }

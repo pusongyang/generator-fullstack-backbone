@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js" lang="">
+<html manifest="offline.appcache" class="no-js" lang="zh">
 <head>
     <meta charset="utf-8">
     <title><%= appName %></title>
@@ -36,8 +36,8 @@
     </script>
 
 <% if (includeRequireJS) { %>
-    <script src="bower_components/spin.js/spin.min.js"></script>
-    <script src="bower_components/requirejs/require.js"></script>
+    <script src="scripts/vendor/spin.min.js"></script>
+    <script src="scripts/vendor/require.js"></script>
     <script src="scripts/main.js"></script>
 <% }else{ %>
     <!-- build:js scripts/vendor.js -->

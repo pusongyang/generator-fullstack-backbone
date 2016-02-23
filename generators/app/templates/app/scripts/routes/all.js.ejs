@@ -1,0 +1,26 @@
+/**
+ * Created by songyangpu on 16/2/23.
+ */
+/*global <%= appSlugName %>, Backbone*/
+<%= appSlugName %>.Routers = <%= appSlugName %>.Routers || {};
+
+(function () {
+    'use strict';
+    <%= appSlugName %>.Routers.Portal = Backbone.Router.extend({
+        routes: {
+            '':'main',
+            'about':'about'
+        },
+        initialize:function(){
+        },
+        execute: function(callback, args, name) {
+            if (callback) callback.apply(this, args);
+        },
+        main: function () {
+            new <%= appSlugName %>.Views.Portal();
+        }
+    });
+
+    <%= appSlugName %>.Routers.Router = new <%= appSlugName %>.Routers.Portal();
+    Backbone.history.start();
+})();

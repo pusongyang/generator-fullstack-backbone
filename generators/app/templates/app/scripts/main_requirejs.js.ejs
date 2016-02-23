@@ -51,7 +51,7 @@ require.config({
 require([
     'backbone',
     'routes/all',
-    'common'
+    'vendor/common'
 ], function (Backbone, AllRouter, Common) {
     Common.app=new AllRouter();
     Backbone.history.start();

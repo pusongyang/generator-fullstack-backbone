@@ -195,21 +195,32 @@ module.exports = function (grunt) {
                     '*.{ico,txt}',
                     'images/{,*/}*.{webp,gif}',
                     'styles/fonts/{,*/}*.*',
+                    'scripts/vendor/{,*/}*.*',
                     'locales/{,*/}*.*',
                 ]
-            }, {
+            },
 <% if (cssUILib==="sassFoundation") { -%>
+            {
                 expand: true,
                 flatten: true,
                 src: ['<%%= yeoman.app %>/styles/foundation-icons/*.*'],
                 dest:'<%%= yeoman.dist %>/styles/'
-<% } if (cssUILib==="sassMaterialize") { -%>
+            },
+<% }else if (cssUILib==="sassMaterialize") { -%>
+            {
                 expand: true,
                 flatten: true,
                 src: ['<%%= yeoman.app %>/materialize/font/*.*'],
                 dest:'<%%= yeoman.dist %>/styles/font/'
+            },
 <% } -%>
-            }, {
+<% if(includeRequireJS) { -%>
+            {
+                src: '.tmp/scripts/main.js',
+                dest: '<%%= yeoman.dist %>/scripts/main.js'
+            },
+<% } -%>
+            {
                 expand: true,
                 dot: true,
                 cwd: 'server',
@@ -248,7 +259,28 @@ module.exports = function (grunt) {
                 ]
             }
         }
-    }
+    },
+    manifest: {
+        generate: {
+            options: {
+                basePath: '<%%= yeoman.dist %>',
+                cache: ['index.html', 'offline.html'],
+                network: ['http://*', 'https://*'],
+                fallback: ['/offline.html'],
+                preferOnline: true,
+                verbose: true,
+                timestamp: true,
+                hash: true,
+                master: ['index.html']
+            },
+            src: [
+                'images/**/*.{jpg,png}',
+                'scripts/*.js',
+                'styles/*.css'
+            ],
+            dest: '<%%= yeoman.dist %>/offline.appcache'
+        }
+    },
 });
 
     grunt.registerTask('createDefaultTemplate', function () {
@@ -295,7 +327,8 @@ module.exports = function (grunt) {
         'uglify',
         'copy',
         'rev',
-        'usemin'
+        'usemin',
+        'manifest'
     ]);
 
     grunt.registerTask('default', [
