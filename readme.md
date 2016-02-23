@@ -1,8 +1,11 @@
 # Backbone.js generator [![Build Status](https://secure.travis-ci.org/yeoman/generator-backbone.svg?branch=master)](http://travis-ci.org/yeoman/generator-backbone) [![Coverage Status](https://coveralls.io/repos/yeoman/generator-backbone/badge.png?branch=master)](https://coveralls.io/r/yeoman/generator-backbone?branch=master)
 
-A Backbone generator for Yeoman that provides a functional boilerplate Backbone app out of the box. You also get access to a number of sub-generators which can be used to easily create individual models, views, collections and so on.
+A Fullstack Backbone generator for Yeoman that provides a functional boilerplate Backbone app out of the box. You also get access to a number of sub-generators which can be used to easily create individual models, views, collections and so on.
 
 Optional RequireJS (AMD) support has recently been added as a prompt when using the generator on new projects.
+
+Features:
+1) grunt build,support offline Manifest.
 
 
 ## Usage
@@ -17,6 +20,16 @@ mkdir my-new-project && cd $_
 Run `yo fullstack-backbone`, optionally passing an app name:
 ```
 yo fullstack-backbone [app-name]
+```
+
+Run 'yo fullstack-backbone:all portal',portal is the name of your new action:
+```
+yo fullstack-backbone:all [action]
+```
+
+Run 'grunt serve',start your backbone fullstack trip(The server start need redis and mongoDB).
+```
+grunt serve
 ```
 
 ## Generators

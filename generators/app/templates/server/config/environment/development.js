@@ -5,7 +5,7 @@
 module.exports = {
     db: {
         mongo: {
-            uri:'mongodb://localhost/jiuyi'
+            uri:'mongodb://localhost/test'
         }
     },
     redis: {

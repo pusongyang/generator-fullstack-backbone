@@ -6,7 +6,6 @@
     'use strict';
     <%= appClassName %>.Collections.<%= className %> = Backbone.Collection.extend({
         url: '/<%= className.toString().toLowerCase() %>',
-        model: <%= appClassName %>.Models.<%= modelName %>,
-        comparator:"_id"
+        model: <%= appClassName %>.Models.<%= modelName %>
     });
 })();

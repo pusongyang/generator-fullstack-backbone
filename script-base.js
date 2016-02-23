@@ -24,14 +24,16 @@ var ScriptBase = yeoman.generators.NamedBase.extend({
 
     _addScriptToIndex: function (script) {
         var appPath="",
-            fullPath="";
+            fullPath="",
+            entryIndex;
         try {
             appPath = this.env.options.appPath;
-            fullPath = this.destinationPath(path.join(appPath, 'index.html'));
+            entryIndex = this.config.get("entryIndex");
+            fullPath = this.destinationPath(path.join(appPath, entryIndex));
 
             backboneUtils.rewriteFile({
                 file: fullPath,
-                needle: '<!-- endbuild -->',
+                needle: '<!-- needlePlace -->',
                 splicable: [
                     '<script src="scripts/' + script + '.js"></script>'
                 ]

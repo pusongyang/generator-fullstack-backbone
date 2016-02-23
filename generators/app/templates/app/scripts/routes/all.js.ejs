@@ -6,7 +6,7 @@
 
 (function () {
     'use strict';
-    <%= appSlugName %>.Routers.Portal = Backbone.Router.extend({
+    <%= appSlugName %>.Routers.All = Backbone.Router.extend({
         routes: {
             '':'main',
             'about':'about'
@@ -21,6 +21,6 @@
         }
     });
 
-    <%= appSlugName %>.Routers.Router = new <%= appSlugName %>.Routers.Portal();
+    <%= appSlugName %>.Routers.Router = new <%= appSlugName %>.Routers.All();
     Backbone.history.start();
 })();

@@ -38,7 +38,7 @@ module.exports = function (grunt) {
 <% if (cssUILib!=="none") { -%>
             compass: {
                 files: ['<%%= yeoman.app %>/styles/sass/{,*/}*.{scss,sass}'],
-                tasks: ['sass:server']
+                tasks: ['compass:server']
             },
 <% } -%>
             livereload:{
@@ -73,7 +73,7 @@ module.exports = function (grunt) {
         },
         open: {
             server: {
-                path: 'http://localhost:'+SERVER_PORT+'/index.html'
+                path: 'http://localhost:'+SERVER_PORT+'/<%=entryIndex -%>'
             }
         },
         clean: {
@@ -264,14 +264,14 @@ module.exports = function (grunt) {
         generate: {
             options: {
                 basePath: '<%%= yeoman.dist %>',
-                cache: ['index.html', 'offline.html'],
+                cache: ['<%=entryIndex -%>', 'offline.html'],
                 network: ['http://*', 'https://*'],
                 fallback: ['/offline.html'],
                 preferOnline: true,
                 verbose: true,
                 timestamp: true,
                 hash: true,
-                master: ['index.html']
+                master: ['<%=entryIndex -%>']
             },
             src: [
                 'images/**/*.{jpg,png}',
@@ -294,7 +294,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('serve', function (target) {
         if (target === 'dist') {
-            return grunt.task.run(['build', 'open:server', 'connect:dist:keepalive']);
+            return grunt.task.run(['build', 'open:server']);
         }
 
         grunt.task.run([

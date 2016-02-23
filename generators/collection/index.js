@@ -14,6 +14,7 @@ var CollectionGenerator = scriptBase.extend({
         var dirPath = '../templates';
         this.sourceRoot(path.join(__dirname, dirPath));
         this.name=Inflector.pluralize(this.name);
+        this.serverRouteName=this.config.get("serverRouteName");
     },
 
     writing: {
@@ -24,7 +25,7 @@ var CollectionGenerator = scriptBase.extend({
                 {
                     appClassName: pascalCase(this.appname),
                     className: pascalCase(this.name),
-                    modelName: Inflector.singularize(this.name)
+                    modelName: pascalCase( Inflector.singularize(this.name) )
                 }
             );
 
@@ -46,7 +47,7 @@ var CollectionGenerator = scriptBase.extend({
                 this.templatePath('server/api/controller.js'),
                 this.destinationPath('server/api/'+this.name+"/"+this.name+".controller.js")
             );
-            var routesFile=this.fs.read(this.destinationPath('server/routes/api.js'),{raw:false,defaults:''}),
+            var routesFile=this.fs.read(this.destinationPath('server/routes/'+this.serverRouteName+'.js'),{raw:false,defaults:''}),
                 insertFlag='{{insertFlag}}',
                 codeTemplate="    app.use('/<%=className %>',require('./../api/<%=className %>/index'));";
             var insertPlace=routesFile.indexOf(insertFlag)+insertFlag.length;
@@ -58,7 +59,7 @@ var CollectionGenerator = scriptBase.extend({
                     renderContent,
                     routesFile.slice(insertPlace)];
                 this.fs.write(
-                    this.destinationPath('server/routes/api.js'),
+                    this.destinationPath('server/routes/'+this.serverRouteName+'.js'),
                     newRoutesFile.join("")
                 );
             }

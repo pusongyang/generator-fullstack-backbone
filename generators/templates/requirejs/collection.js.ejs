@@ -9,8 +9,7 @@ define([
 
     var <%= className %>Collection = Backbone.Collection.extend({
         url: '/<%= className.toString().toLowerCase() %>',
-        model: <%= modelName %>Model,
-        comparator:"_id"
+        model: <%= modelName %>Model
     });
     return <%= className %>Collection;
 });

@@ -28,6 +28,7 @@ var ViewGenerator = scriptBase.extend({
                 {
                     appClassName: pascalCase(this.appname),
                     className: pascalCase(this.name),
+                    collectionName: pascalCase( Inflector.pluralize(this.name) ),
                     'jst_path': this.jst_path
                 }
             );

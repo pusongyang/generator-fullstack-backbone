@@ -13,14 +13,15 @@ var BackboneGenerator = yeoman.generators.Base.extend({
 
         this.option('skip-install', {
             desc: 'Skip the bower and npm installations',
-            defaults: true
+            defaults: false
         });
         this.appname = pascalCase(this.appname);
 
         this.config.defaults({
-            appName: this.appname
+            appName: this.appname,
+            entryIndex: "index.html",
+            serverRouteName: "api"
         });
-        //this.indexFile = htmlWiring.readFileAsString(this.templatePath('app/index.html'));
     },
 
     prompting: function () {
@@ -61,11 +62,23 @@ var BackboneGenerator = yeoman.generators.Base.extend({
                 value: 'none'
             }],
             default:this.config.get("cssUILib")
+        }, {
+            type:'input',
+            name:'entryIndex',
+            message:"what's your default entry file's name?",
+            default:this.config.get("entryIndex")
+        }, {
+            type:'input',
+            name:'serverRouteName',
+            message:'what\'s your default server route name?',
+            default:this.config.get("serverRouteName")
         }];
 
         this.prompt(prompts, function (answers) {
             var features = answers.features,
-                cssUILib = answers.cssUILib;
+                cssUILib = answers.cssUILib,
+                entryIndex = answers.entryIndex,
+                serverRouteName = answers.serverRouteName;
 
             function hasFeature(feat) {
                 return features.indexOf(feat) !== -1;
@@ -76,11 +89,15 @@ var BackboneGenerator = yeoman.generators.Base.extend({
             this.includeRequireJS = hasFeature('requirejs');
             this.includeModernizr = hasFeature('modernizr');
             this.cssUILib = cssUILib;
+            this.entryIndex = entryIndex;
+            this.serverRouteName = serverRouteName;
             this.env.options.appPath="app";
 
             this.config.set('includeRequireJS', this.includeRequireJS);
             this.config.set('includeModernizr', this.includeModernizr);
             this.config.set('cssUILib', cssUILib);
+            this.config.set('entryIndex', entryIndex);
+            this.config.set('serverRouteName', serverRouteName);
             cb();
         }.bind(this));
     },
@@ -121,6 +138,7 @@ var BackboneGenerator = yeoman.generators.Base.extend({
                 {
                     appPath: this.env.options.appPath,
                     includeRequireJS: this.includeRequireJS,
+                    entryIndex:this.entryIndex,
                     cssUILib: this.cssUILib
                 }
             );
@@ -182,7 +200,7 @@ var BackboneGenerator = yeoman.generators.Base.extend({
                     }
                 );
                 this.fs.copyTpl(
-                    this.templatePath('app/scripts/routes/main.js.ejs'),
+                    this.templatePath('app/scripts/routes/all.js.ejs'),
                     this.destinationPath(this.env.options.appPath + '/scripts/routes/all.js'),
                     {
                         appSlugName: this.appname
@@ -223,7 +241,7 @@ var BackboneGenerator = yeoman.generators.Base.extend({
                 this.destinationPath(this.env.options.appPath + '/scripts/vendor/')
             );
             this.fs.write(
-                this.destinationPath(path.join(this.env.options.appPath, '/index.html')),
+                this.destinationPath(path.join(this.env.options.appPath, '/'+this.entryIndex)),
                 this.indexFile
             );
 //server side create
@@ -261,33 +279,30 @@ var BackboneGenerator = yeoman.generators.Base.extend({
                 this.templatePath('server/config/environment/development.js'),
                 this.destinationPath('server/config/environment/development.js')
             );
-            if( !this.fs.exists(this.destinationPath('server/routes/api.js')) ){
+            if( !this.fs.exists(this.destinationPath('server/routes/'+this.serverRouteName+'.js')) ){
                 this.fs.copyTpl(
                     this.templatePath('server/routes/api.js'),
-                    this.destinationPath('server/routes/api.js')
+                    this.destinationPath('server/routes/'+this.serverRouteName+'.js')
                 );
             }
         },
 
         composeTest: function () {
-            if (['backbone:app', 'backbone'].indexOf(this.options.namespace) >= 0) {
-                this.composeWith(this.testFramework, {
-                    'skip-install': this.options['skip-install'],
-                    'skipMessage': true
-                });
-            }
+            //if (['fullstack-backbone:app', 'fullstack-backbone'].indexOf(this.options.namespace) >= 0) {
+            //    this.composeWith(this.cssUILib, {
+            //        'skip-install': this.options['skip-install'],
+            //        'skipMessage': false
+            //    });
+            //}
         }
     },
 
     install: function () {
         var shouldInstall = !this.options['skip-install'];
-        var isInstallable = ['backbone:app', 'backbone'].indexOf(this.options.namespace) > -1;
+        var isInstallable = ['fullstack-backbone:app', 'fullstack-backbone'].indexOf(this.options.namespace) > -1;
         if (shouldInstall && isInstallable) {
             this.npmInstall();
-            this.bowerInstall('', {
-                'config.cwd': this.destinationPath('.'),
-                'config.directory': path.join(this.config.get('appPath'), 'bower_components')
-            });
+            this.bowerInstall();
         }
     },
     end:function(){
@@ -298,8 +313,9 @@ var BackboneGenerator = yeoman.generators.Base.extend({
             }else if(this.cssUILib==="sassFoundation"){
                 bowerSassPath="foundation/scss/**";
             }else if(this.cssUILib==="sassBootstrap"){
-                bowerSassPath="bootstrap-sass/assets/stylesheets/**";
+                bowerSassPath="bootstrap-sass-official/assets/stylesheets/**";
             }
+            console.log(path.join("app/bower_components/"+bowerSassPath));
             this.fs.copy(
                 this.destinationPath( path.join("app/bower_components/"+bowerSassPath) ),
                 path.join("app/styles/sass/")
