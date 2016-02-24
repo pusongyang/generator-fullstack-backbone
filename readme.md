@@ -5,7 +5,9 @@ A Fullstack Backbone generator for Yeoman that provides a functional boilerplate
 Optional RequireJS (AMD) support has recently been added as a prompt when using the generator on new projects.
 
 Features:
+
 1) grunt build,support offline Manifest.
+2) grunt upload,support compress and publish package.(But you need development your own CMS server)
 
 
 ## Usage

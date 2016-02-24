@@ -3,7 +3,7 @@
 define([
   'underscore',
   'backbone',
-  'models/<%= modelName %>'
+  'models/<%= modelName.toString().toLowerCase() %>'
 ], function (_, Backbone, <%= modelName %>Model) {
     'use strict';
 

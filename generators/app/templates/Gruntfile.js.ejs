@@ -2,6 +2,7 @@
 var LIVERELOAD_PORT = 35729;
 var SERVER_PORT = 9000;
 var path = require('path');
+var moment=require('moment');
 
 // # Globbing
 // for performance reasons we're only matching one level down:
@@ -281,6 +282,38 @@ module.exports = function (grunt) {
             dest: '<%%= yeoman.dist %>/offline.appcache'
         }
     },
+    compress: {
+        main: {
+            options: {
+                archive: function () {
+                    var date=moment().format("YYYY-MM-DD");
+                    return 'archive/' + date + '.zip'
+                },
+                mode: 'zip'
+            },
+            files: [
+                {expand: true, src: ['dist/**','server_dist/**','package.json','bower.json','pm2.json']}
+            ]
+        }
+    },
+    upload_file: {
+        "test": {
+            src: ['archive/*.zip'],
+            options: {
+                url: 'http://uploadservice/upload',
+                method: 'POST',
+                qs: {
+                    'gray':true,//true(default):for test server;false:for official servers;
+                    'rollback':false,//true(default):backup for rollback;false:don't backup;
+                    'autoPublish': true,//true(default):auto run scripts;false:manual run scripts;
+                    'wholePackage': true,//false(default):only patch;true:full package(rm the old one);
+                    'production': '<%=appName %>',//project name
+                    'npmUpdated': false,//true:npm install --production;false(default):nothing;
+                    "pm2Script":false//true:pm2 startOrRestart pm2.json;false(default):nothing;
+                }
+            }
+        },
+    }
 });
 
     grunt.registerTask('createDefaultTemplate', function () {
@@ -331,7 +364,8 @@ module.exports = function (grunt) {
         'manifest'
     ]);
 
-    grunt.registerTask('default', [
-        'build'
+    grunt.registerTask('upload', [
+        'compress',
+        'upload_file:test'
     ]);
 };

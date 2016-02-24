@@ -136,6 +136,7 @@ var BackboneGenerator = yeoman.generators.Base.extend({
                 this.templatePath('Gruntfile.js.ejs'),
                 this.destinationPath('Gruntfile.js'),
                 {
+                    appName: this.appname,
                     appPath: this.env.options.appPath,
                     includeRequireJS: this.includeRequireJS,
                     entryIndex:this.entryIndex,
@@ -306,6 +307,10 @@ var BackboneGenerator = yeoman.generators.Base.extend({
         }
     },
     end:function(){
+        var skipInstall = this.options['skip-install'];
+        if(skipInstall){
+            return;
+        }
         var bowerSassPath="";
         if( this.cssUILib!=="none" ){
             if(this.cssUILib==="sassMaterialize"){
