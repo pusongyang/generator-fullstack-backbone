@@ -5,10 +5,9 @@ A Fullstack Backbone generator for Yeoman that provides a functional boilerplate
 Optional RequireJS (AMD) support has recently been added as a prompt when using the generator on new projects.
 
 Features:
-
-1) grunt build,support offline Manifest.
-2) grunt upload,support compress and publish package.(But you need development your own CMS server)
-
+- 1) UI lib support,Sass(Compass):Materialize,Foundation,Bootstrap.
+- 2) grunt build,support offline Manifest.
+- 3) grunt upload,support compress and publish package.(But you need development your own CMS server).
 
 ## Usage
 
@@ -89,8 +88,6 @@ jst: {
 A result of this change is that your template variable definitions must also be updated from `<%= templateVariable %>` to `<%= data.templateVariable %>`. More information on this can be found in the [Underscore documentation](http://underscorejs.org/#template).
 
 ## Contribute
-
-When submitting an issue, please follow the [guidelines](https://github.com/yeoman/yeoman/blob/master/contributing.md#issue-submission). Especially important is to make sure Yeoman is up-to-date, and providing the command or commands that cause the issue.
 
 When submitting a bugfix, write a test that exposes the bug and fails before applying your fix. Submit the test alongside the fix.
 

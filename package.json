@@ -43,7 +43,6 @@
     "generators/app",
     "generators/collection",
     "generators/model",
-    "generators/router",
     "generators/templates",
     "generators/view",
     "script-base.js",

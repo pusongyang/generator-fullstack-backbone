@@ -15,6 +15,8 @@ var BackboneGenerator = yeoman.generators.Base.extend({
             desc: 'Skip the bower and npm installations',
             defaults: false
         });
+        this.argument('app_name', { type: String, required: false });
+        this.appname = this.app_name || this.appname;
         this.appname = pascalCase(this.appname);
 
         this.config.defaults({
@@ -79,7 +81,6 @@ var BackboneGenerator = yeoman.generators.Base.extend({
                 cssUILib = answers.cssUILib,
                 entryIndex = answers.entryIndex,
                 serverRouteName = answers.serverRouteName;
-
             function hasFeature(feat) {
                 return features.indexOf(feat) !== -1;
             }
