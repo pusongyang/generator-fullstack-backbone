@@ -1,4 +1,4 @@
-# Backbone.js generator [![Build Status](https://secure.travis-ci.org/yeoman/generator-backbone.svg?branch=master)](http://travis-ci.org/yeoman/generator-backbone) [![Coverage Status](https://coveralls.io/repos/yeoman/generator-backbone/badge.png?branch=master)](https://coveralls.io/r/yeoman/generator-backbone?branch=master)
+# Backbone.js generator [![Build Status](https://travis-ci.org/pusongyang/generator-fullstack-backbone.svg?branch=master)](https://travis-ci.org/pusongyang/generator-fullstack-backbone) [![Coverage Status](https://coveralls.io/repos/github/pusongyang/generator-fullstack-backbone/badge.svg?branch=master)](https://coveralls.io/github/pusongyang/generator-fullstack-backbone?branch=master)
 
 A Fullstack Backbone generator for Yeoman that provides a functional boilerplate Backbone app out of the box. You also get access to a number of sub-generators which can be used to easily create individual models, views, collections and so on.
 
