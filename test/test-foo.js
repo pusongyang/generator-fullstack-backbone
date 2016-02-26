@@ -11,6 +11,9 @@ var config = [
     '{',
     '  "generator-fullstack-backbone": {',
     '    "appName": "Temp",',
+    '    "includeRequireJS": false,',
+    '    "includeModernizr": false,',
+    '    "cssUILib": "sassBootstrap",',
     '    "serverRouteName": "api",',
     '    "entryIndex": "index.html"',
     '  }',
@@ -59,19 +62,20 @@ describe('fullstack backbone generator ', function () {
     });
 
     describe('creates model', function () {
-        it('without failure', function () {
+        it('without failure', function (done) {
             test.createSubGenerator(config, 'model', function () {
                 var expectedContent = [
                     ['app/scripts/models/foo.js', /Models.Foo = Backbone.Model.extend\(\{/],
                     ['server/models/foo.model.js', /var FooSchema = new Schema\(\{/]
                 ];
                 assert.fileContent(expectedContent);
+                done();
             });
         });
     });
 
     describe('creates collection', function () {
-        it('without failure', function () {
+        it('without failure', function (done) {
             test.createSubGenerator(config, 'collection', function () {
                 var expectedContent = [
                     ['app/scripts/collections/foos.js', /Collections.Foos = Backbone.Collection.extend\(\{/],
@@ -79,11 +83,12 @@ describe('fullstack backbone generator ', function () {
                     ['server/routes/api.js', /app.use\(\'\/foos\'/]
                 ];
                 assert.fileContent(expectedContent);
+                done();
             });
         });
     });
     describe('creates view', function () {
-        it('without failure', function () {
+        it('without failure', function (done) {
             test.createSubGenerator(config, 'view', function () {
                 var expectedContent = [
                     ['app/scripts/views/foo.js', /Views.Foo = Backbone.View.extend\(\{(.|\n)*app\/scripts\/templates\/foo.ejs/]
@@ -91,6 +96,7 @@ describe('fullstack backbone generator ', function () {
                 assert.fileContent(expectedContent);
                 assert.file('app/scripts/templates/foo.ejs');
             });
+            done();
         });
     });
 });
