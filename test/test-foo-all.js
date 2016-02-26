@@ -36,7 +36,7 @@ describe('fullstack backbone generator:all', function () {
             .on('end', done);
     });
     describe('creates all', function () {
-        it('without failure', function () {
+        it('without failure', function (done) {
             var expectedContent = [
                 ['app/scripts/models/foo.js', /Models.Foo = Backbone.Model.extend\(\{/],
                 ['server/models/foo.model.js', /var FooSchema = new Schema\(\{/],
@@ -47,6 +47,7 @@ describe('fullstack backbone generator:all', function () {
             ];
             assert.file('app/scripts/templates/foo.ejs');
             assert.fileContent(expectedContent);
+            done();
         });
     });
 });
