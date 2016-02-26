@@ -1,6 +1,6 @@
 {
   "name": "generator-fullstack-backbone",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Scaffold out a Fullstack Backbone.js project",
   "keywords": [
     "yeoman-generator",
@@ -18,7 +18,7 @@
   },
   "scripts": {
     "test": "mocha --reporter spec",
-    "coverall":"istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
+    "coverall": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
   },
   "dependencies": {
     "ejs": "^2.3.0",
