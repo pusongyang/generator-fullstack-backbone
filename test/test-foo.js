@@ -16,7 +16,7 @@ var config = [
     '  }',
     '}'
 ].join('\n');
-describe('fullstack backbone generator with appPath option', function () {
+describe('fullstack backbone generator ', function () {
     beforeEach(function (done) {
         var deps = [
             [helpers.createDummyGenerator(), 'mocha:app']
@@ -29,9 +29,7 @@ describe('fullstack backbone generator with appPath option', function () {
             .withOptions({skipInstall: true})
             .withPrompts({
                 features: ['requirejs', 'modernizr'],
-                cssUILib: 'sassMaterialize',
-                entryIndex: 'index.html',
-                serverRouteName: 'api'
+                cssUILib: 'sassMaterialize'
             })
             .withGenerators(deps)
             .on('end', done);
@@ -42,7 +40,6 @@ describe('fullstack backbone generator with appPath option', function () {
                 ['bower.json', /"name": "Temp"/],
                 ['Gruntfile.js', /'compass:server'/]
             ];
-
             var expected = [
                 'app/404.html',
                 'app/500.html',
@@ -62,20 +59,19 @@ describe('fullstack backbone generator with appPath option', function () {
     });
 
     describe('creates model', function () {
-        it('without failure', function (done) {
+        it('without failure', function () {
             test.createSubGenerator(config, 'model', function () {
                 var expectedContent = [
                     ['app/scripts/models/foo.js', /Models.Foo = Backbone.Model.extend\(\{/],
                     ['server/models/foo.model.js', /var FooSchema = new Schema\(\{/]
                 ];
                 assert.fileContent(expectedContent);
-                done();
             });
         });
     });
 
     describe('creates collection', function () {
-        it('without failure', function (done) {
+        it('without failure', function () {
             test.createSubGenerator(config, 'collection', function () {
                 var expectedContent = [
                     ['app/scripts/collections/foos.js', /Collections.Foos = Backbone.Collection.extend\(\{/],
@@ -83,21 +79,18 @@ describe('fullstack backbone generator with appPath option', function () {
                     ['server/routes/api.js', /app.use\(\'\/foos\'/]
                 ];
                 assert.fileContent(expectedContent);
-                done();
             });
         });
     });
     describe('creates view', function () {
-        it('without failure', function (done) {
+        it('without failure', function () {
             test.createSubGenerator(config, 'view', function () {
                 var expectedContent = [
                     ['app/scripts/views/foo.js', /Views.Foo = Backbone.View.extend\(\{(.|\n)*app\/scripts\/templates\/foo.ejs/]
                 ];
                 assert.fileContent(expectedContent);
                 assert.file('app/scripts/templates/foo.ejs');
-                done();
             });
         });
     });
-
 });

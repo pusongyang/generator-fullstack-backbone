@@ -15,11 +15,7 @@ exports.createSubGenerator = function (config, type, asserts, deps) {
 };
 
 exports.createAppGenerator = function (config, prompts, done) {
-
-    prompts = prompts || {features: ['sassBootstrap']};
-
     var options = {skipInstall: true};
-
     var deps = [
         [helpers.createDummyGenerator(), 'mocha:app']
     ];
