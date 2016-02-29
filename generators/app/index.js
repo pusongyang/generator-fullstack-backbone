@@ -38,6 +38,10 @@ var BackboneGenerator = yeoman.generators.Base.extend({
             name: 'features',
             message: 'What more would you like?',
             choices: [{
+                name: 'Use Mysql Sequelize',
+                value: 'sequelize',
+                checked: this.config.get("includeSequelize")
+            },{
                 name: 'Use RequireJS',
                 value: 'requirejs',
                 checked: this.config.get("includeRequireJS")
@@ -89,11 +93,14 @@ var BackboneGenerator = yeoman.generators.Base.extend({
             // we change a bit this way of doing to automatically do this in the self.prompt() method.
             this.includeRequireJS = hasFeature('requirejs');
             this.includeModernizr = hasFeature('modernizr');
+            this.includeSequelize = hasFeature('sequelize');
+
             this.cssUILib = cssUILib;
             this.entryIndex = entryIndex;
             this.serverRouteName = serverRouteName;
             this.env.options.appPath="app";
 
+            this.config.set('includeSequelize', this.includeSequelize);
             this.config.set('includeRequireJS', this.includeRequireJS);
             this.config.set('includeModernizr', this.includeModernizr);
             this.config.set('cssUILib', cssUILib);
@@ -151,6 +158,7 @@ var BackboneGenerator = yeoman.generators.Base.extend({
                 this.destinationPath('package.json'),
                 {
                     includeRequireJS: this.includeRequireJS,
+                    includeSequelize:this.includeSequelize,
                     cssUILib: this.cssUILib
                 }
             );
@@ -266,8 +274,11 @@ var BackboneGenerator = yeoman.generators.Base.extend({
                 this.templatePath("server/routes")
             );
             this.fs.copyTpl(
-                this.templatePath('server/app.js'),
-                this.destinationPath('server/app.js')
+                this.templatePath('server/app.js.ejs'),
+                this.destinationPath('server/app.js'),
+                {
+                    includeSequelize:this.includeSequelize
+                }
             );
             this.fs.copyTpl(
                 this.templatePath('server/config/express.js'),
@@ -285,6 +296,15 @@ var BackboneGenerator = yeoman.generators.Base.extend({
                 this.fs.copyTpl(
                     this.templatePath('server/routes/api.js'),
                     this.destinationPath('server/routes/'+this.serverRouteName+'.js')
+                );
+            }
+            if(this.includeSequelize){
+                mkdirp.sync(
+                    this.templatePath("server/sqldb")
+                );
+                this.fs.copy(
+                    this.templatePath('server/sqldb/index.js'),
+                    this.destinationPath('server/sqldb/index.js')
                 );
             }
         },

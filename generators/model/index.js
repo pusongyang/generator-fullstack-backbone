@@ -53,6 +53,15 @@ var ModelGenerator = scriptBase.extend({
                     className: pascalCase(this.name)
                 }
             );
+            if(this.config.get('includeSequelize')){
+                this.fs.copyTpl(
+                    this.templatePath('server/sqldb/sequelize.js.ejs'),
+                    this.destinationPath('server/sqldb/' + this.name + ".model.js"),
+                    {
+                        className: pascalCase(this.name)
+                    }
+                );
+            }
         },
 
         composeTest: function () {

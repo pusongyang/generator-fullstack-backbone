@@ -5,9 +5,9 @@ A Fullstack Backbone generator for Yeoman that provides a functional boilerplate
 Optional RequireJS (AMD) support has recently been added as a prompt when using the generator on new projects.
 
 Features:
-- 1) Front End,you can choose RequireJS or not.
-- 2) Back End,we using ExpressJs,redis,mogoose.
-- 3) UI lib support,Sass(Compass):Materialize,Foundation,Bootstrap.
+- 1) Front End,you can choose [RequireJS](http://requirejs.org/) or not.
+- 2) Back End,we using [ExpressJs](http://expressjs.com/),redis,[mogoose](http://mongoosejs.com/),[Sequelize](http://docs.sequelizejs.com/en/latest/).
+- 3) UI lib support,Sass(Compass):[Materialize](http://materializecss.com/),[Foundation5](http://foundation.zurb.com/sites/docs/v/5.5.3/),[Bootstrap](http://v3.bootcss.com/getting-started/).
 - 4) grunt build,support offline Manifest.
 - 5) grunt upload,support compress and publish package.(But you need development your own CMS server).
 
@@ -48,9 +48,7 @@ Available generators:
 
 ```
 yo fullstack-backbone # generates your application base and build workflow
-yo fullstack-backbone:model blog
-yo fullstack-backbone:collection blog
-yo fullstack-backbone:view blog
+yo fullstack-backbone:all blog
 grunt serve
 ```
 
@@ -58,7 +56,17 @@ Also checkout this [NetTuts write-up](http://net.tutsplus.com/tutorials/javascri
 
 
 ## Options
-
+* `sequelize`
+    mysql AR class,you can define your table like OOP in 'server/sqldb/yourClass.model.js' and use it like:
+```
+var models  = require('../sqldb');
+models.User.findAll({}).then(function(users) {
+    res.render('index', {
+        title: 'Express',
+        users: users
+    });
+});
+```
 * `--skip-install`
 
   Skips the automatic execution of `bower` and `npm` after
