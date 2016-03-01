@@ -25,12 +25,12 @@ Run `yo fullstack-backbone`, optionally passing an app name:
 yo fullstack-backbone [app-name]
 ```
 
-Run 'yo fullstack-backbone:all portal',portal is the name of your new action:
+Run `yo fullstack-backbone:all portal`,portal is the name of your new action:
 ```
 yo fullstack-backbone:all [action]
 ```
 
-Run 'grunt serve',start your backbone fullstack trip(The server start need redis and mongoDB).
+Run `grunt serve`,start your backbone fullstack trip(The server start need redis and mongoDB).
 ```
 grunt serve
 ```
