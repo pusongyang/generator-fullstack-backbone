@@ -13,7 +13,7 @@ Features:
 
 ## Usage
 
-Install: `npm install -g generator-fullstack-backbone`
+Install: `npm install -g yo grunt bower generator-fullstack-backbone`
 
 Make a new directory and `cd` into it:
 ```
