@@ -19,7 +19,7 @@ var config = [
     '  }',
     '}'
 ].join('\n');
-describe('fullstack backbone generator ', function () {
+describe('test.js fullstack backbone generator ', function () {
     beforeEach(function (done) {
         var deps = [
             [helpers.createDummyGenerator(), 'mocha:app']
@@ -31,7 +31,7 @@ describe('fullstack backbone generator ', function () {
             .withArguments(['temp'])
             .withOptions({skipInstall: true})
             .withPrompts({
-                features: ['requirejs', 'modernizr'],
+                features: ['modernizr'],
                 cssUILib: 'sassMaterialize'
             })
             .withGenerators(deps)
@@ -40,6 +40,7 @@ describe('fullstack backbone generator ', function () {
     describe('create expected files', function () {
         it('check created files', function () {
             var expectedContent = [
+                ['app/scripts/routes/all.js', /'doctor':'doctor'/],
                 ['bower.json', /"name": "Temp"/],
                 ['Gruntfile.js', /'compass:server'/]
             ];
@@ -53,6 +54,10 @@ describe('fullstack backbone generator ', function () {
                 '.editorconfig',
                 '.yo-rc.json',
                 'app/scripts/main.js',
+                'app/scripts/collections/doctors.js',
+                'app/scripts/models/doctor.js',
+                'app/scripts/views/doctor.js',
+                'app/scripts/templates/doctor.ejs',
                 'app/styles/sass/main.scss'
             ];
 

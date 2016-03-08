@@ -7,4 +7,5 @@
 
 module.exports = function (app) {
     //Insert routes below {{insertFlag}}
+    app.use('/doctors',require('./../api/doctors/index'));
 };
