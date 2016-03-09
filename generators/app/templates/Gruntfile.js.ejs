@@ -313,6 +313,22 @@ module.exports = function (grunt) {
                 }
             }
         },
+    },
+    // Test settings
+    karma: {
+        unit: {
+            configFile: 'karma.conf.js',
+            singleRun: true
+        }
+    },
+    mochaTest: {
+        options: {
+            reporter: 'spec',
+            timeout: 5000 // set default mocha spec timeout
+        },
+        unit: {
+            src: ['test/server/*.spec.js']
+        }
     }
 });
 
@@ -363,7 +379,11 @@ module.exports = function (grunt) {
         'usemin',
         'manifest'
     ]);
-
+    grunt.registerTask('test', [
+        'jst',
+        'karma',
+        'mochaTest'
+    ]);
     grunt.registerTask('upload', [
         'compress',
         'upload_file:test'

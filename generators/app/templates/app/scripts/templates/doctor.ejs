@@ -1,0 +1,22 @@
+<p>Your content here.</p>
+<p>The data was mocked by app/scripts/mock_inject.js</p>
+
+<div class="row">
+    <div class="col-xs-12">
+        <ul id="doctorUl" >
+            <% _.each(doctors, function(doc,i) { %>
+            <li data-id="<%=doc._id %>" >
+                <div class="row">
+                    <div class="col-xs-2">
+                        <img src="<%=doc.image %>" width="160" height="90"/>
+                    </div>
+                    <div class="col-xs-10">
+                        <h3><%=doc.name %></h3>
+                        <p> &#xf100; <%=doc.email %></p>
+                    </div>
+                </div>
+            </li>
+            <% }) %>
+        </ul>
+    </div>
+</div>

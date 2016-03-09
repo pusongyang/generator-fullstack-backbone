@@ -19,7 +19,7 @@ var config = [
     '  }',
     '}'
 ].join('\n');
-describe('fullstack backbone generator:all', function () {
+describe('test-foo-all.js fullstack backbone generator:all', function () {
     beforeEach(function (done) {
         var deps = [
             path.join(__dirname, '../generators/collection'),

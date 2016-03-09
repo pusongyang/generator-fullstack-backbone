@@ -3,12 +3,14 @@
 define([
     'jquery',
     'backbone',
+    'views/doctor',
     'vendor/common'
-], function ($, Backbone, Common) {
+], function ($, Backbone, DoctorView,Common) {
     'use strict';
     var AllRouter = Backbone.Router.extend({
         routes: {
-            '':'main'
+            '':'main',
+            'doctor':'doctor'
         },
         initialize:function(){
             this.back=$("#backBtn");
@@ -21,6 +23,11 @@ define([
         },
         main: function () {
             this.back.hide();
+            Common.currentView=new DoctorView();
+        },
+        doctor: function () {
+            this.back.hide();
+            Common.currentView=new DoctorView();
         }
     });
 
