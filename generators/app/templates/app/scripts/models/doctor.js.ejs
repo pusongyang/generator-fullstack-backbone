@@ -1,11 +1,11 @@
-/*global TrdBoss, Backbone*/
+/*global <%= appSlugName %>, Backbone*/
 
-TrdBoss.Models = TrdBoss.Models || {};
+<%= appSlugName %>.Models = <%= appSlugName %>.Models || {};
 
 (function () {
     'use strict';
 
-    TrdBoss.Models.Doctor = Backbone.Model.extend({
+    <%= appSlugName %>.Models.Doctor = Backbone.Model.extend({
 
         initialize: function () {
         },

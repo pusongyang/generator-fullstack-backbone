@@ -52,17 +52,4 @@ describe('test-mock.js fullstack backbone generator ', function () {
             assert.fileContent(expectedContent);
         });
     });
-    describe('creates collection', function () {
-        it('without failure', function (done) {
-            test.createSubGenerator(config, 'collection', function () {
-                var expectedContent = [
-                    ['app/scripts/collections/foos.js', /Collections.Foos = Backbone.Collection.extend\(\{/],
-                    ['server/api/foos/index.js', /module.exports = router/],
-                    ['server/routes/api.js', /app.use\(\'\/foos\'/]
-                ];
-                assert.fileContent(expectedContent);
-                done();
-            });
-        });
-    });
 });

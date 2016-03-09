@@ -1,7 +1,7 @@
 /*global TrdBoss, $*/
 Mock.mock('/doctors', 'get',function(url,type,body) {
     //return
-    var data=Mock.mock({'array|1-10': [{
+    var data=Mock.mock({'array|5': [{
         '_id|+1': 1,
         'email': '@EMAIL',
         'name':'@CNAME',

@@ -150,6 +150,20 @@ var BackboneGenerator = yeoman.generators.Base.extend({
                     cssUILib: this.cssUILib
                 }
             );
+            this.fs.copyTpl(
+                this.templatePath('pm2.json.ejs'),
+                this.destinationPath('pm2.json'),
+                {
+                    appName: this.appname
+                }
+            );
+            this.fs.copyTpl(
+                this.templatePath('_karma.conf.js.ejs'),
+                this.destinationPath('karma.conf.js'),
+                {
+                    includeRequireJS: this.includeRequireJS
+                }
+            );
         },
         packageJSON: function () {
             this.fs.copyTpl(
@@ -188,9 +202,9 @@ var BackboneGenerator = yeoman.generators.Base.extend({
             );
         },
         mainScript:function(){
-            var midFolder=(this.includeRequireJS) ? 'requirejs' : 'norequirejs';
+            var postfix=(this.includeRequireJS) ? '_require' : '';
             this.fs.copyTpl(
-                this.templatePath('app/scripts/'+midFolder+'/main.js.ejs'),
+                this.templatePath('app/scripts/main'+postfix+'.js.ejs'),
                 this.destinationPath('app/scripts/main.js'),
                 {
                     cssUILib: this.cssUILib,
@@ -198,14 +212,75 @@ var BackboneGenerator = yeoman.generators.Base.extend({
                 }
             );
             this.fs.copyTpl(
-                this.templatePath('app/scripts/'+midFolder+'/routes/all.js.ejs'),
+                this.templatePath('app/scripts/routes/all'+postfix+'.js.ejs'),
                 this.destinationPath('app/scripts/routes/all.js'),
                 {
                     appSlugName: this.appname
                 }
             );
+            this.fs.copyTpl(
+                this.templatePath('app/scripts/collections/doctors'+postfix+'.js.ejs'),
+                this.destinationPath('app/scripts/collections/doctors.js'),
+                {
+                    appSlugName: this.appname
+                }
+            );
+            this.fs.copyTpl(
+                this.templatePath('app/scripts/models/doctor'+postfix+'.js.ejs'),
+                this.destinationPath('app/scripts/models/doctor.js'),
+                {
+                    appSlugName: this.appname
+                }
+            );
+            this.fs.copyTpl(
+                this.templatePath('app/scripts/views/doctor'+postfix+'.js.ejs'),
+                this.destinationPath('app/scripts/views/doctor.js'),
+                {
+                    appSlugName: this.appname
+                }
+            );
+        },
+        testScript:function(){
+            var postfix=(this.includeRequireJS) ? '_require' : '';
+            this.fs.copyTpl(
+                this.templatePath('test/app/collections/doctors'+postfix+'.spec.js.ejs'),
+                this.destinationPath('test/app/collections/doctors.spec.js'),
+                {
+                    appSlugName: this.appname
+                }
+            );
+            this.fs.copyTpl(
+                this.templatePath('test/app/models/doctor'+postfix+'.spec.js.ejs'),
+                this.destinationPath('test/app/models/doctor.spec.js'),
+                {
+                    appSlugName: this.appname
+                }
+            );
+            this.fs.copyTpl(
+                this.templatePath('test/app/views/doctor'+postfix+'.spec.js.ejs'),
+                this.destinationPath('test/app/views/doctor.spec.js'),
+                {
+                    appSlugName: this.appname
+                }
+            );
+            if(this.includeRequireJS){
+                this.fs.copy(
+                    this.templatePath('test/app/test-main.js'),
+                    this.destinationPath('test/app/test-main.js')
+                );
+            }
+            this.fs.copy(
+                this.templatePath('test/server/'),
+                this.destinationPath('test/server/'),
+                {
+                    globOptions: {
+                        dot:true
+                    }
+                }
+            );
         },
         setupEnv: function () {
+            var postfix=(this.includeRequireJS) ? '_require' : '';
             mkdirp.sync(
                 this.templatePath("app")
             );
@@ -219,42 +294,23 @@ var BackboneGenerator = yeoman.generators.Base.extend({
                 this.templatePath('app/images')
             );
             this.fs.copy(
-                this.templatePath('app/*.html'),
+                this.templatePath('app/*.{html,ico,txt}'),
                 this.destinationPath('app/')
-            );
-            this.fs.copy(
-                this.templatePath('app/favicon.ico'),
-                this.destinationPath('app/favicon.ico')
-            );
-            this.fs.copy(
-                this.templatePath('app/robots.txt'),
-                this.destinationPath('app/robots.txt')
-            );
-            this.fs.copy(
-                this.templatePath('app/scripts/vendor/**'),
-                this.destinationPath('app/scripts/vendor/')
             );
             if(this.includeRequireJS){
                 this.fs.copy(
-                    this.templatePath('app/scripts/requirejs/'),
-                    this.destinationPath('app/scripts/'),
-                    {
-                        globOptions: {
-                            dot:true
-                        }
-                    }
-                );
-            }else{
-                this.fs.copy(
-                    this.templatePath('app/scripts/norequirejs/'),
-                    this.destinationPath('app/scripts/'),
-                    {
-                        globOptions: {
-                            dot:true
-                        }
-                    }
+                    this.templatePath('app/scripts/vendor/'),
+                    this.destinationPath('app/scripts/vendor/')
                 );
             }
+            this.fs.copy(
+                this.templatePath('app/scripts/mock_inject'+postfix+'.js'),
+                this.destinationPath('app/scripts/mock_inject.js')
+            );
+            this.fs.copy(
+                this.templatePath('app/scripts/templates/doctor.ejs'),
+                this.destinationPath('app/scripts/templates/doctor.ejs')
+            );
             this.fs.write(
                 this.destinationPath(path.join('app/'+this.entryIndex)),
                 this.indexFile
@@ -265,12 +321,6 @@ var BackboneGenerator = yeoman.generators.Base.extend({
             );
             mkdirp.sync(
                 this.templatePath("server/api")
-            );
-            mkdirp.sync(
-                this.templatePath("server/config")
-            );
-            mkdirp.sync(
-                this.templatePath("server/config/environment")
             );
             mkdirp.sync(
                 this.templatePath("server/models")
@@ -285,24 +335,32 @@ var BackboneGenerator = yeoman.generators.Base.extend({
                     includeSequelize:this.includeSequelize
                 }
             );
-            this.fs.copyTpl(
-                this.templatePath('server/config/express.js'),
-                this.destinationPath('server/config/express.js')
+            this.fs.copy(
+                this.templatePath('server/config/'),
+                this.destinationPath('server/config/'),
+                {
+                    globOptions: {
+                        dot:true
+                    }
+                }
             );
             this.fs.copyTpl(
-                this.templatePath('server/config/environment/index.js'),
-                this.destinationPath('server/config/environment/index.js')
+                this.templatePath('server/routes/api.js'),
+                this.destinationPath('server/routes/'+this.serverRouteName+'.js')
             );
-            this.fs.copyTpl(
-                this.templatePath('server/config/environment/development.js'),
-                this.destinationPath('server/config/environment/development.js')
+            this.fs.copy(
+                this.templatePath('server/api/'),
+                this.destinationPath('server/api/'),
+                {
+                    globOptions: {
+                        dot:true
+                    }
+                }
             );
-            if( !this.fs.exists(this.destinationPath('server/routes/'+this.serverRouteName+'.js')) ){
-                this.fs.copyTpl(
-                    this.templatePath('server/routes/api.js'),
-                    this.destinationPath('server/routes/'+this.serverRouteName+'.js')
-                );
-            }
+            this.fs.copy(
+                this.templatePath('server/models/'),
+                this.destinationPath('server/models/')
+            );
             if(this.includeSequelize){
                 mkdirp.sync(
                     this.templatePath("server/sqldb")
@@ -312,7 +370,7 @@ var BackboneGenerator = yeoman.generators.Base.extend({
                     this.destinationPath('server/sqldb/index.js')
                 );
             }
-        },
+        }
 
         //composeTest: function () {
         //    if (['fullstack-backbone:app', 'fullstack-backbone'].indexOf(this.options.namespace) >= 0) {

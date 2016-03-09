@@ -28,5 +28,5 @@ module.exports = {
         }
     },
     appPath:"app",
-    seedDB: false
+    seedDB: true
 };

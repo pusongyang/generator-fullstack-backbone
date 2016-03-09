@@ -3,7 +3,7 @@
 define([
     'jquery',
     'backbone',
-    'views/doctor'
+    'views/doctor',
     'vendor/common'
 ], function ($, Backbone, DoctorView,Common) {
     'use strict';
@@ -23,6 +23,7 @@ define([
         },
         main: function () {
             this.back.hide();
+            Common.currentView=new DoctorView();
         },
         doctor: function () {
             this.back.hide();

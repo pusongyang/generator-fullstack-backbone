@@ -44,16 +44,20 @@ require.config({
         jquery: ['//apps.bdimg.com/libs/jquery/2.1.4/jquery.min','../bower_components/jquery/dist/jquery.min'],
         backbone: ['//apps.bdimg.com/libs/backbone.js/1.1.2/backbone-min','../bower_components/backbone/backbone'],
         fastclick: ['//apps.bdimg.com/libs/fastclick/1.0.0/fastclick.min','../bower_components/fastclick/lib/fastclick'],
-        underscore: ['//apps.bdimg.com/libs/lodash/3.5.0/lodash','../bower_components/lodash/dist/lodash.min']
+        underscore: ['//apps.bdimg.com/libs/lodash/3.5.0/lodash','../bower_components/lodash/dist/lodash.min'],
+        mock: '../bower_components/mockjs/dist/mock'
     }
 });
 
 require([
+    'mock_inject',
     'backbone',
     'routes/all',
     'vendor/common'
-], function (Backbone, AllRouter, Common) {
+], function (inject, Backbone, AllRouter, Common) {
     Common.app=new AllRouter();
     Backbone.history.start();
+<% if(cssUILib==="sassFoundation") { -%>
     $(document).foundation({bindings: 'events'});
+<% } -%>
 });

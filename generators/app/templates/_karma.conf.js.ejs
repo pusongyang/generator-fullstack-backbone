@@ -7,20 +7,27 @@ module.exports = function (config) {
         basePath: '',
 
         // testing framework to use (jasmine/mocha/qunit/...)
+<% if(includeRequireJS){ -%>
+        frameworks: ['mocha','requirejs' ],
+<% }else{ -%>
         frameworks: ['mocha','chai' ],
-
+<% } -%>
         client: {
             mocha: {
                 timeout: 5000 // set default mocha spec timeout
             }
         },
 
-        preprocessors: {
-            'test/test.html': ['html2js']
-        },
-
         // list of files / patterns to load in the browser
         files: [
+<% if(includeRequireJS){ -%>
+            {pattern: '.tmp/scripts/templates.js', included: false},
+            {pattern: 'node_modules/**/*.js', included: false},
+            {pattern: 'app/bower_components/**/*.js', included: false},
+            'test/app/test-main.js',
+            {pattern: 'app/scripts/**/*.js', included: false},
+            {pattern: 'test/app/**/*.spec.js', included: false}
+<% }else{ -%>
             // bower:js
             'app/bower_components/jquery/dist/jquery.js',
             'app/bower_components/lodash/dist/lodash.compat.js',
@@ -30,16 +37,21 @@ module.exports = function (config) {
             'node_modules/socket.io-client/socket.io.js',
             '.tmp/scripts/templates.js',
             'app/scripts/vendor/*.js',
-            'app/scripts/inject.js',
+            'app/scripts/mock_inject.js',
             'app/scripts/main.js',
             'app/scripts/models/*.js',
             'app/scripts/collections/*.js',
             'app/scripts/views/*.js',
             'test/app/**/*.spec.js'
+<% } -%>
         ],
 
         // list of files / patterns to exclude
-        exclude: [],
+        exclude: [
+<% if(includeRequireJS){ -%>
+            'app/scripts/main.js'
+<% } -%>
+        ],
 
         // web server port
         port: 8083,

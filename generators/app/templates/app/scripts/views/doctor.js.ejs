@@ -1,13 +1,13 @@
-/*global TrdBoss, Backbone, JST*/
+/*global <%= appSlugName %>, Backbone, JST*/
 
-TrdBoss.Views = TrdBoss.Views || {};
+<%= appSlugName %>.Views = <%= appSlugName %>.Views || {};
 
 (function () {
     'use strict';
-    TrdBoss.Views.Doctor = Backbone.View.extend({
+    <%= appSlugName %>.Views.Doctor = Backbone.View.extend({
         template: JST['app/scripts/templates/doctor.ejs'],
         tagName: 'div',
-        collectionFun:TrdBoss.Collections.Doctors,
+        collectionFun:<%= appSlugName %>.Collections.Doctors,
         className: '',
         events: {},
         initialize: function (collection) {
