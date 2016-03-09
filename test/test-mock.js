@@ -11,17 +11,15 @@ var config = [
     '{',
     '  "generator-fullstack-backbone": {',
     '    "appName": "Temp",',
-    '    "includeSequelize": true,',
     '    "includeRequireJS": false,',
     '    "includeModernizr": false,',
     '    "cssUILib": "sassBootstrap",',
-    '    "serverRouteName": "api",',
-    '    "entryIndex": "index.html"',
+    '    "serverRouteName": "api"',
     '  }',
     '}'
 ].join('\n');
-describe('test-foo-sequelize fullstack backbone generator ', function () {
-    beforeEach(function (done) {
+describe('test-mock.js fullstack backbone generator ', function () {
+    before(function (done) {
         var deps = [
             [helpers.createDummyGenerator(), 'mocha:app']
         ];
@@ -31,35 +29,27 @@ describe('test-foo-sequelize fullstack backbone generator ', function () {
             })
             .withOptions({skipInstall: true})
             .withPrompts({
-                features: ['sequelize']
+                features: [],
+                cssUILib: 'sassBootstrap',
+                entryIndex:'index.html',
+                serverRouteName:'api'
             })
             .withGenerators(deps)
-            .on('end', done);
+            .on('end', function(){
+                done();
+            });
     });
     describe('create expected files', function () {
         it('check created files', function () {
             var expectedContent = [
-                ['server/config/environment/development.js', /mysql: \{/],
-                ['server/app.js', /var models = require\("\.\/sqldb"\)/],
-                ['package.json', /"mysql": "\^2\.10\.2",/]
+                ['app/index.html', /bower_components\/mockjs\/dist\/mock\.js/],
+                ['app/index.html', /scripts\/mock_inject\.js/]
             ];
             var expected = [
-                'server/sqldb/index.js'
+                'app/scripts/mock_inject.js'
             ];
             assert.file(expected);
             assert.fileContent(expectedContent);
-        });
-    });
-
-    describe('creates model', function () {
-        it('without failure', function (done) {
-            test.createSubGenerator(config, 'model', function () {
-                var expectedContent = [
-                    ['server/sqldb/foo.model.js', /var Foo = sequelize\.define\("Foo", \{/]
-                ];
-                assert.fileContent(expectedContent);
-                done();
-            });
         });
     });
 });

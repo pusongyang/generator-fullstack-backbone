@@ -1,0 +1,15 @@
+/*global <%= appSlugName %>, Backbone*/
+
+<%= appSlugName %>.Collections = <%= appSlugName %>.Collections || {};
+
+(function () {
+    'use strict';
+    <%= appSlugName %>.Collections.Doctors = Backbone.Collection.extend({
+        url: '/doctors',
+        completed: function () {
+            console.log("completed");
+            return this.where({completed: true});
+        },
+        model: <%= appSlugName %>.Models.Doctor
+    });
+})();

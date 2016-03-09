@@ -9,7 +9,7 @@
     <%= appSlugName %>.Routers.All = Backbone.Router.extend({
         routes: {
             '':'main',
-            'about':'about'
+            'doctor':'main'
         },
         initialize:function(){
         },
@@ -17,7 +17,7 @@
             if (callback) callback.apply(this, args);
         },
         main: function () {
-            new <%= appSlugName %>.Views.Portal();
+            new <%= appSlugName %>.Views.Doctor();
         }
     });
 

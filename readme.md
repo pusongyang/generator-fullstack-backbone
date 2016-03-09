@@ -8,9 +8,10 @@ Features:
 - 1) Front End,you can choose [RequireJS](http://requirejs.org/) or not.
 - 2) Back End,we using [ExpressJs](http://expressjs.com/),redis,[mogoose](http://mongoosejs.com/),[Sequelize](http://docs.sequelizejs.com/en/latest/).
 - 3) UI lib support,Sass(Compass):[Materialize](http://materializecss.com/),[Foundation5](http://foundation.zurb.com/sites/docs/v/5.5.3/),[Bootstrap](http://v3.bootcss.com/getting-started/).
-- 4) grunt build,support offline Manifest.
-- 5) grunt upload,support compress and publish package.(But you need development your own CMS server).
+- 4) `grunt build`,support offline Manifest.
+- 5) `grunt upload`,support compress and publish package.(But you need development your own CMS server).
 - 6) Browser Support(It's also limited by the UI lib your choose):IE9+,FireFox4+,Safari5+,Chrome7+;
+- 7) [Mockjs](http://mockjs.com/),hijack your ajax in develop environment.Split FE&BE.
 
 ## Usage
 
