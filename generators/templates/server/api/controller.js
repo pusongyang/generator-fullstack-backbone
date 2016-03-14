@@ -1,6 +1,6 @@
 
 exports.index = function(req, res){
-    res.json({success:true,msg:"get index"});
+    res.json({success:true,msg:["get index"]});
 };
 exports.post = function(req, res){
     res.json({success:true,msg:"post"});

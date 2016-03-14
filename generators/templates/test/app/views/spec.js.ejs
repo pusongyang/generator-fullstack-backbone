@@ -1,0 +1,34 @@
+<% if(includeRequireJS) {%>
+define(['chai','collections/<%= collectionName.toString().toLowerCase() %>','views/<%= className.toString().toLowerCase() %>'], function(chai,<%= collectionName %>Collection,<%= className %>View) {
+    var expect = chai.expect;
+    describe("<%= className %>View template rendering", function () {
+        it('render by remote data', function (done) {
+            var <%= collectionName %> = new <%= collectionName %>Collection();
+            <%= collectionName %>.create({
+                '_id': 1
+            });
+            var view = new <%= className %>View(<%= collectionName %>);
+            view.once('render', function () {
+                expect(view.$el.html()).to.have.string('Your content here.');
+                done();
+            });
+            view.render();
+        });
+    });
+});
+<% }else{ %>
+describe("<%= appSlugName %>.Views.<%= className %> template rendering", function() {
+    it('render by remote data', function (done) {
+        var <%= collectionName %> = new <%= collectionName %>Collection();
+        <%= collectionName %>.create({
+            '_id': 1
+        });
+        var view = new <%= appSlugName %>.Views.<%= className %>(<%= collectionName %>);
+        view.once('render', function () {
+            expect(view.$el.html()).to.have.string('Your content here.');
+            done();
+        });
+        view.render();
+    });
+});
+<% } %>

@@ -1,0 +1,45 @@
+<% if(includeRequireJS) {%>
+define(['chai','models/<%= className.toString().toLowerCase() %>'], function(chai,<%= className %>Model) {
+    var expect = chai.expect;
+    describe("<%= className %>Model", function() {
+        before(function () {
+            this.<%= className %> = new <%= className %>Model();
+        });
+        after(function () {
+            this.<%= className %> = null;
+        });
+        it('should have the correct defaults', function() {
+            var <%= className %>=this.<%= className %>;
+            expect(<%= className %>.get('_id')).to.equal('');
+        });
+
+        it('should honor passed in attributes', function() {
+            var new<%= className %> = new <%= className %>Model({
+                '_id': 1
+            });
+            expect(new<%= className %>.get('_id')).to.equal(1);
+        })
+    });
+});
+<% }else{ %>
+describe("<%= appSlugName %>.Models.<%= className %>", function() {
+    before(function () {
+        this.<%= className %> = new <%= appSlugName %>.Models.<%= className %>();
+    });
+    after(function () {
+        this.<%= className %> = null;
+    });
+
+    it('should have the correct defaults', function() {
+        var <%= className %>=this.<%= className %>;
+        expect(<%= className %>.get('_id')).to.equal('');
+    });
+
+    it('should honor passed in attributes', function() {
+        var new<%= className %> = new <%= appSlugName %>.Models.<%= className %>({
+            '_id': 1
+        });
+        expect(new<%= className %>.get('_id')).to.equal(1);
+    })
+});
+<% } %>

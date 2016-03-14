@@ -1,0 +1,36 @@
+<% if(includeRequireJS) {%>
+define(['chai','collections/<%= className.toString().toLowerCase() %>'], function(chai,<%= className %>Collection) {
+    var expect = chai.expect;
+    describe("<%= className %>Collection", function () {
+        before(function () {
+            this.<%= className %> = new <%= className %>Collection();
+        });
+        after(function () {
+            this.<%= className %> = null;
+        });
+        describe("creation", function () {
+            it("has default values", function () {
+                var <%= className %> = this.<%= className %>;
+                expect(<%= className %>.length).to.equal(0);
+            });
+        });
+    });
+});
+<% }else{ %>
+describe("<%= appSlugName %>.Collections.<%= className %>", function () {
+    before(function () {
+        // Create a reference for all internal suites/specs.
+        // Use internal method to clear out existing data.
+        this.<%= className %> = new <%= appSlugName %>.Collections.<%= className %>();
+    });
+    after(function () {
+        // Remove the reference.
+        this.<%= className %> = null;
+    });
+    describe("creation", function () {
+        it("has default values", function () {
+            expect(this.<%= className %>).to.have.length(0);
+        });
+    });
+});
+<% } %>

@@ -26,6 +26,7 @@ var ModelGenerator = scriptBase.extend({
             };
         });
         this.name=Inflector.singularize(this.name);
+        this.includeRequireJS=this.config.get('includeRequireJS');
     },
 
     writing: {
@@ -63,9 +64,18 @@ var ModelGenerator = scriptBase.extend({
                 );
             }
         },
-
-        composeTest: function () {
-            this._generateTest('model');
+        createTestFiles: function () {
+            var sourceRoot = '../../generators/templates';
+            this.sourceRoot(path.join(__dirname, sourceRoot));
+            this.fs.copyTpl(
+                this.templatePath('test/app/models/spec.js.ejs'),
+                this.destinationPath('test/app/models/'+this.name.toString().toLowerCase()+".spec.js"),
+                {
+                    includeRequireJS:this.includeRequireJS,
+                    appSlugName: pascalCase(this.appname),
+                    className: pascalCase(this.name)
+                }
+            );
         }
     }
 });

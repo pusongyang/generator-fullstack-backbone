@@ -15,6 +15,7 @@ var CollectionGenerator = scriptBase.extend({
         this.sourceRoot(path.join(__dirname, dirPath));
         this.name=Inflector.pluralize(this.name);
         this.serverRouteName=this.config.get("serverRouteName");
+        this.includeRequireJS=this.config.get('includeRequireJS');
     },
 
     writing: {
@@ -64,12 +65,27 @@ var CollectionGenerator = scriptBase.extend({
                 );
             }
         },
-        composeTest: function () {
-            this._generateTest('collection');
+        createTestFiles: function () {
+            var sourceRoot = '../../generators/templates';
+            this.sourceRoot(path.join(__dirname, sourceRoot));
+            this.fs.copyTpl(
+                this.templatePath('test/app/collections/spec.js.ejs'),
+                this.destinationPath('test/app/collections/'+this.name.toString().toLowerCase()+".spec.js"),
+                {
+                    includeRequireJS:this.includeRequireJS,
+                    appSlugName: pascalCase(this.appname),
+                    className: pascalCase(this.name)
+                }
+            );
+            this.fs.copyTpl(
+                this.templatePath('test/server/spec.js.ejs'),
+                this.destinationPath('test/server/'+this.name.toString().toLowerCase()+".spec.js"),
+                {
+                    className: pascalCase(this.name)
+                }
+            );
         }
-    },
-
-
+    }
 });
 
 module.exports = CollectionGenerator;

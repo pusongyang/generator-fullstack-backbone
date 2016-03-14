@@ -13,6 +13,7 @@ var ViewGenerator = scriptBase.extend({
         var dirPath = '../templates';
         this.sourceRoot(path.join(__dirname, dirPath));
         this.name = Inflector.singularize(this.name);
+        this.includeRequireJS=this.config.get('includeRequireJS');
     },
 
     writing: {
@@ -37,9 +38,19 @@ var ViewGenerator = scriptBase.extend({
                 this._addScriptToIndex('views/' + this.name);
             }
         },
-
-        composeTest: function () {
-            this._generateTest('view');
+        createTestFiles: function () {
+            var sourceRoot = '../../generators/templates';
+            this.sourceRoot(path.join(__dirname, sourceRoot));
+            this.fs.copyTpl(
+                this.templatePath('test/app/views/spec.js.ejs'),
+                this.destinationPath('test/app/views/'+this.name.toString().toLowerCase()+".spec.js"),
+                {
+                    includeRequireJS:this.includeRequireJS,
+                    appSlugName: pascalCase(this.appname),
+                    className: pascalCase(this.name),
+                    collectionName:pascalCase( Inflector.pluralize(this.name) )
+                }
+            );
         }
     }
 });

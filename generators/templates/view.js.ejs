@@ -7,17 +7,26 @@
     <%= appClassName %>.Views.<%= className %> = Backbone.View.extend({
         template: JST['<%= jst_path %>'],
         tagName: 'div',
-        el: '#body',
         collection:new <%= appClassName %>.Collections.<%= collectionName %>(),
         className: '',
         events: {},
-        initialize: function () {
-            this.listenTo(this.collection, 'sync', this.render);
-            this.collection.fetch({beforeSend:function(xhr){
-            },reset:true,data:{}});
+        initialize: function (collection) {
+            if(collection instanceof this.collectionFun){
+                this.collection=collection;
+            }else{
+                this.collection=new this.collectionFun();
+                this.collection.fetch({beforeSend:function(xhr){},reset:true,data:{}});
+            }
+            this.listenTo(this.collection, 'reset', this.render);
         },
         render: function () {
-            this.$el.html(this.template(this.collection.toJSON()));
+            this.$el.html(this.template({<%=collectionName.toString().toLowerCase() %>:this.collection.toJSON()}));
+            $('#body').html(this.$el.html());
+            this.trigger("render", "render done!");
+            return this;
+        },
+        remove: function(){
+            this.undelegateEvents();
         }
     });
 })();
