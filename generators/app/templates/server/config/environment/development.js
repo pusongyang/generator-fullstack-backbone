@@ -6,7 +6,7 @@ module.exports = {
     db: {
         mysql: {
             host: 'localhost',
-            dialect: 'mysql'|'sqlite',//'mysql'|'mariadb'|'sqlite'|'postgres'|'mssql'
+            dialect: 'mysql',//'mysql'|'mariadb'|'sqlite'|'postgres'|'mssql'
             pool: {
                 max: 5,
                 min: 0,

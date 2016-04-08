@@ -12,7 +12,7 @@ Features:
 - 5) `grunt upload`,support compress and publish package.(But you need development your own CMS server).
 - 6) `grunt test`,run test [karma](https://karma-runner.github.io/) for client side code ; [mocha](http://mochajs.org/) for server side code.
 - 7) Browser Support(It's also limited by the UI lib your choose):IE9+,FireFox4+,Safari5+,Chrome7+;
-- 8) [Mockjs](http://mockjs.com/),hijack your ajax in develop environment.Split FE&BE.
+- 8) [Mockjs](http://mockjs.com/)(app/scripts/mock_inject.js),hijack your ajax in develop environment.Split FE&BE.
 
 ## Usage
 
@@ -54,13 +54,17 @@ yo fullstack-backbone # generates your application base and build workflow
 yo fullstack-backbone:all blog
 grunt serve
 ```
+After these commands,your blog base code will be generated.But you still need do some work to make it show on the screen.
+- 1) Open app/scripts/routes/all.js.
+- 2) Add your blog view in the backbone routes.
+- 3) Add href to this routes.eg: ``` http://localhost/index.html#blog ```
 
 Also checkout this [NetTuts write-up](http://net.tutsplus.com/tutorials/javascript-ajax/building-apps-with-the-yeoman-workflow/) for a guide to building Backbone.js apps using this generator.
 
 
 ## Options
 * `sequelize`
-    mysql AR class,you can define your table like OOP in 'server/sqldb/yourClass.model.js' and use it like:
+    mysql ORM for nodejs,you can define your table like OOP in 'server/sqldb/yourClass.model.js' and use it like:
 ```
 var models  = require('../sqldb');
 models.User.findAll({}).then(function(users) {
