@@ -14,6 +14,13 @@ Features:
 - 7) Browser Support(It's also limited by the UI lib your choose):IE9+,FireFox4+,Safari5+,Chrome7+;
 - 8) [Mockjs](http://mockjs.com/)(app/scripts/mock_inject.js),hijack your ajax in develop environment.Split FE&BE.
 
+Base on:
+- 1) [redis](http://redis.io/) for fast RAM cache data and session.
+- 2) [mongodb](https://docs.mongodb.com/) for NO-SQL DB.
+- 3) [mysql](https://www.mysql.com/) most popular SQL DB.
+- 2) [compass](http://compass-style.org/) more function and mixin for [SASS](http://sass-lang.com/) for CSS extension language.
+
+
 ## Usage
 
 Install: `npm install -g yo grunt bower generator-fullstack-backbone`
@@ -104,6 +111,41 @@ jst: {
 ```
 A result of this change is that your template variable definitions must also be updated from `<%= templateVariable %>` to `<%= data.templateVariable %>`. More information on this can be found in the [Underscore documentation](http://underscorejs.org/#template).
 
+## Folder & Files structure explain:
+```
+app(for browser side files)：
+	bower_components:bower depends libs。
+	images:put your images here。
+	scripts(backbone MVC & libs)：
+		Collections:backbone collections。
+		helpers:backbone helpers。
+		models:backbone models。
+		routes:backbone routes。
+		Templates:backbone templates。
+		vendor:common libs。
+		views:backbone views。
+Dist:build folder。
+Node_modules:nodejs depends libs。
+Server(for express server side files):
+    api:RESTful controller
+    Config:express server config
+    models:OOP DB models
+    routes:RESTful routes
+    app.js:express server start scripts
+    helper.js:commonJS for server common helper
+Test(test files)。
+.bowerrc:bower config。
+.editorconfig:IDE common config。
+.gitattributes:Git attributes config。
+.jshintrc:jshint javascript coding style。
+.yo-rc.json:yoman generator config。
+Bower.json:bower config。
+Config.rb:ruby config for compass。
+Gruntfile.js: grunt config for grunt running scripts。
+Package.json:nodejs config。
+pm2.json:for pm2 maintain your project on server.
+karma.conf.js: karma test config.
+```
 ## Contribute
 
 When submitting a bugfix, write a test that exposes the bug and fails before applying your fix. Submit the test alongside the fix.
