@@ -117,32 +117,32 @@ app(for browser side files)：
 	bower_components:bower depends libs。
 	images:put your images here。
 	scripts(backbone MVC & libs)：
-		Collections:backbone collections。
+		collections:backbone collections。
 		helpers:backbone helpers。
 		models:backbone models。
 		routes:backbone routes。
-		Templates:backbone templates。
+		templates:backbone templates。
 		vendor:common libs。
 		views:backbone views。
-Dist:build folder。
-Node_modules:nodejs depends libs。
-Server(for express server side files):
+dist:build folder。
+node_modules:nodejs depends libs。
+server(for express server side files):
     api:RESTful controller
-    Config:express server config
+    config:express server config
     models:OOP DB models
     routes:RESTful routes
     app.js:express server start scripts
     helper.js:commonJS for server common helper
-Test(test files)。
+test(test files)。
 .bowerrc:bower config。
 .editorconfig:IDE common config。
 .gitattributes:Git attributes config。
 .jshintrc:jshint javascript coding style。
 .yo-rc.json:yoman generator config。
-Bower.json:bower config。
-Config.rb:ruby config for compass。
-Gruntfile.js: grunt config for grunt running scripts。
-Package.json:nodejs config。
+bower.json:bower config。
+config.rb:ruby config for compass。
+gruntfile.js: grunt config for grunt running scripts。
+package.json:nodejs config。
 pm2.json:for pm2 maintain your project on server.
 karma.conf.js: karma test config.
 ```

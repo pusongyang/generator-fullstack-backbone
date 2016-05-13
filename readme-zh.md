@@ -10,11 +10,11 @@ Bootstrap: Bootstrap，来自 Twitter，是目前很受欢迎的前端框架。B
 
 
 本系统采用backbone的MVC框架实现单页面应用。前端和后端都使用javascript编写代码。主要使用nodejs技术，脚手架工具：yoman+grunt+bower.后端服务器使用expressjs。前端库：underscore+backbone+jquery
-App文件主要存放客户端使用的文件：
-	Bower_components:存放通过bower安装的库。
-	Images:存放图片文件夹。
-	Scripts存放脚本文件夹：
-		Collections:backbone集合类脚本文件夹。
+app文件主要存放客户端使用的文件：
+	bower_components:存放通过bower安装的库。
+	images:存放图片文件夹。
+	scripts存放脚本文件夹：
+		collections:backbone集合类脚本文件夹。
 		helpers:backbone辅助类脚本文件夹。
 		models:backbone模型类脚本文件夹。
 		routes:backbone路由类脚本文件夹。
@@ -24,15 +24,21 @@ App文件主要存放客户端使用的文件：
 	Config:服务端启动使用到的配置信息。
 	Dist:打包文件夹。
 	Node_modules:nodejs使用的库文件夹。
-Server文件夹主要存放服务器端使用的文件。
-Test 测试脚本文件夹。
+server(express服务器端代码):
+    api:express MVC controller
+    config:express 服务器配置
+    models:express MVC models
+    routes:express MVC routes
+    app.js:express 服务器启动脚本
+    helper.js:commonJS 服务器常用函数
+test 测试脚本文件夹。
 .bowerrc:bower配置文件夹。
 .editorconfig:编辑器IDE的通用编码规范。
 .gitattributes:Git的属性配置文件。
 .jshintrc:jshint javascript的编码规范检查配置文件。
 .yo-rc.json:yoman生成工具的配置文件。
-Bower.json:bower的项目配置文件。
-Config.rb:ruby的项目配置文件。
-Gruntfile.js: grunt的自动执行脚本配置文件。
-Package.json:nodejs的项目配置文件。
-Server.js:项目的服务器启动脚本。
+bower.json:bower的项目配置文件。
+config.rb:compass 使用的ruby的项目配置文件。
+gruntfile.js: grunt的自动执行脚本配置文件。
+package.json:nodejs的项目配置文件。
+karma.conf.js: karma 测试配置.
