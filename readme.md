@@ -1,6 +1,8 @@
 # Backbone.js generator [![Build Status](https://travis-ci.org/pusongyang/generator-fullstack-backbone.svg?branch=master)](https://travis-ci.org/pusongyang/generator-fullstack-backbone) [![Coverage Status](https://coveralls.io/repos/github/pusongyang/generator-fullstack-backbone/badge.svg?branch=master)](https://coveralls.io/github/pusongyang/generator-fullstack-backbone?branch=master)
 
 A Fullstack Backbone generator for Yeoman that provides a functional boilerplate Backbone app out of the box. You also get access to a number of sub-generators which can be used to easily create individual models, views, collections and so on.
+- The Good Part: Backbone help you module your javascript code.Good for maintain and readable. Multi-SASS lib. MVC both front end and back end.
+- The bad Part: More code for the module and MVC and test. Only support IE9+.
 
 Optional RequireJS (AMD) support has recently been added as a prompt when using the generator on new projects.
 
