@@ -14,7 +14,7 @@ module.exports = {
             },
             user: 'root',
             password: '',
-            db:'test'
+            database:'test'
         },
         mongo: {
             uri:'mongodb://localhost/test'
