@@ -7,8 +7,9 @@
         "script"      : "server_dist/app.js",
         "args"        : ["--toto=coco"],
         "watch"       : false,
-        "node_args"   : "--harmony",
+        "node_args"   : ["--harmony", "--max_old_space_size=500"],
         "merge_logs"  : true,
+        "max_memory_restart" : "300M",
         "error_file"      : "err.log",
         "out_file"        : "out.log",
         "log_date_format" : "YYYY-MM-DD "
