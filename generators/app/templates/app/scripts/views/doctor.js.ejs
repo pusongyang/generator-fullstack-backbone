@@ -22,7 +22,7 @@
         },
         render: function () {
             this.$el.html(this.template({doctors:this.collection.toJSON()}));
-            $('#body').html(this.$el.html());
+            $('#body').html(this.$el.html);
             this.trigger("render", "render done!");
             return this;
         }
