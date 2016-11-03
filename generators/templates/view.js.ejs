@@ -21,7 +21,7 @@
         },
         render: function () {
             this.$el.html(this.template({<%=collectionName.toString().toLowerCase() %>:this.collection.toJSON()}));
-            $('#body').html(this.$el.html());
+            $('#body').html(this.$el.html);
             this.trigger("render", "render done!");
             return this;
         },

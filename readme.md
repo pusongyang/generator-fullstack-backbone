@@ -150,7 +150,7 @@ karma.conf.js: karma test config.
 ```
 ## Contribute
 
-When submitting a bugfix, write a test that exposes the bug and fails before applying your fix. Submit the test alongside the fix.
+When submitting a bugfix, write a *test* that exposes the bug and fails before applying your fix. Submit the test alongside the fix.
 
 When submitting a new feature, add tests that cover the feature.
 
